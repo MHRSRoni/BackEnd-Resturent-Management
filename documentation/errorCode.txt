@@ -1,0 +1,40 @@
+error code structure
+EXABCDE
+E => error
+X => error type 
+AB => file name
+CD => function name
+
+====X=====
+=> N = not found
+=> B = bad request
+
+
+=====AB=====
+01 => foodService
+
+
+
+=====CD=====
+01 => allFood
+02 => readFoodById
+03 => updateFoodById
+
+====EF=====
+for seperation
+
+
+
+//not found error
+EN010101 = food doesn't exist in the food model yet
+EN010202 = this food doesn't exist in the food model searched by id
+EN010303 = this food doesn't exist in the food model searched by id
+
+
+
+
+
+
+//bad request error
+EB1000 = user must submit a object to update the food model
+EB010201 = foodId params is not passed in the readFoodById function
