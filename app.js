@@ -5,6 +5,8 @@ const {log} = require('./src/configs/loger')
 const {secure} = require('./src/configs/security')
 const {connectDatabase} =require('./src/configs/database')
 require('dotenv').config()
+//errorHandler
+const {CustomErrorHandler} = require('custom-error-handlers')
 
 
 
@@ -15,6 +17,14 @@ const app = express()
 
 secure(app)   //security implementation
 log(app)      //loging implementation
+
+
+//routes
+
+
+//error handlers
+app.use(CustomErrorHandler)
+
 
 
 

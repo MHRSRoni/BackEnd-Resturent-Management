@@ -26,6 +26,10 @@ const foodSchema = new Schema({
         type : String,
         required : true,
     },
+    price : {
+        type : Number,
+        required : true,
+    },
     discount : {
         status : {
             type : Boolean,

@@ -1,0 +1,17 @@
+/*
+get sliderImage
+update sliderImage 
+
+get allProduct
+get productById 
+get productByCategory
+get productByWord 
+
+post productById
+update productById
+delete productById
+
+get visitorCount
+update visitorCount
+
+*/
