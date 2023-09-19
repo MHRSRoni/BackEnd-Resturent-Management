@@ -6,22 +6,22 @@ const foodSchema = new Schema({
         trim : true,
         maxLength : 255,
         required : true,
+        unique : true,
     },
     category : {
         type : String,
-        enum : ['beverage', 'meat', 'vegetarian', 'daily-special', 'deals']
+        enum : ['beverage', 'meat', 'vegetarian', 'daily-special', 'deals'],
+        required : true,
     },
     description : {
         type : String,
         trim : true,
         required : true
     },
-    image : [
-        {
-            type : String,
-            required : true,
-        }
-    ],
+    image : {
+        type : [String],
+        required : true,
+    },
     calaory : {
         type : String,
         required : true,
@@ -38,7 +38,6 @@ const foodSchema = new Schema({
         percentage : {
             type : Number,
         },
-        required : true,
     },
 },{
     timestamps : true,

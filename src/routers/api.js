@@ -1,17 +1,18 @@
-/*
-get sliderImage
-update sliderImage 
+const { getAllFoodController, readFoodByIdController, readFoodByKeyWordController, readFoodByCategoryController, createFoodController, updateFoodByIdController, deleteFoodByIdController } = require('../controllers/foodController');
 
-get allProduct
-get productById 
-get productByCategory
-get productByWord 
+const router = require('express').Router();
 
-post productById
-update productById
-delete productById
+router.get('/food/', getAllFoodController);
+router.get('/food/id/:foodId', readFoodByIdController);
+router.get('/food/:keyword', readFoodByKeyWordController);
+router.get('/food/category/:category', readFoodByCategoryController);
 
-get visitorCount
-update visitorCount
 
-*/
+router.post('/food/create', createFoodController);
+
+router.put('/food/:foodId/update', updateFoodByIdController);
+
+router.delete('/food/:foodId/delete', deleteFoodByIdController);
+
+
+module.exports = router;
