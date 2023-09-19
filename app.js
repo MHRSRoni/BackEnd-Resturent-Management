@@ -7,6 +7,8 @@ const {connectDatabase} =require('./src/configs/database')
 require('dotenv').config()
 //errorHandler
 const {CustomErrorHandler} = require('custom-error-handlers')
+//router
+const router = require('./src/routers/api')
 
 
 
@@ -19,11 +21,14 @@ secure(app)   //security implementation
 log(app)      //loging implementation
 
 
-//routes
+//body parser
+app.use(express.json())
 
+//routes
+app.use('/api/v1', router)
 
 //error handlers
-app.use(CustomErrorHandler)
+app.use(CustomErrorHandler())
 
 
 
