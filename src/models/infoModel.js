@@ -5,7 +5,7 @@ const infoSchema = new Schema({
         type : Number,
         default : 0
     }
-})
+},{versionKey : false})
 
 const infoModel = model('info', infoSchema);
 

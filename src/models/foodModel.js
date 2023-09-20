@@ -7,6 +7,13 @@ const foodSchema = new Schema({
         maxLength : 255,
         required : true,
         unique : true,
+        index : true,
+    },
+    slug : {
+        type : String,
+        trim : true,
+        lowercase : true,
+        required : true,
     },
     category : {
         type : String,
@@ -37,6 +44,7 @@ const foodSchema = new Schema({
         },
         percentage : {
             type : Number,
+            default : 0,
         },
     },
 },{
@@ -44,6 +52,7 @@ const foodSchema = new Schema({
     versionKey : false,
 })
 
+foodSchema.index({title : 'text'})
 
 const FoodModel = model('food', foodSchema);
 
