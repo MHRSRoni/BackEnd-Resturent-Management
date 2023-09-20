@@ -6,9 +6,12 @@ const {secure} = require('./src/configs/security')
 const {connectDatabase} =require('./src/configs/database')
 require('dotenv').config()
 //errorHandler
+const {NotFoundError} = require('custom-error-handlers/error')
 const {CustomErrorHandler} = require('custom-error-handlers')
 //router
 const router = require('./src/routers/api')
+
+
 
 
 
@@ -26,6 +29,15 @@ app.use(express.json())
 
 //routes
 app.use('/api/v1', router)
+
+//not found handeling
+app.use('*',(req, res, next)=>{
+    try {
+        throw new NotFoundError('page not found', 404)
+    } catch (error) {
+        next(error)
+    }
+})
 
 //error handlers
 app.use(CustomErrorHandler())

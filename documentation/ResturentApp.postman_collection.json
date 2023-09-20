@@ -1,0 +1,243 @@
+{
+	"info": {
+		"_postman_id": "e93020ab-ee81-4137-bda1-bce500046e01",
+		"name": "Resturent App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "27068480"
+	},
+	"item": [
+		{
+			"name": "food",
+			"item": [
+				{
+					"name": "read all food",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base}}/all-food"
+					},
+					"response": []
+				},
+				{
+					"name": "read food for a page",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/food?page=1&pageSize=8",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"food"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "read food by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/food/id/:id",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"food",
+								"id",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "read food by category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/food/category/:category",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"food",
+								"category",
+								":category"
+							],
+							"variable": [
+								{
+									"key": "category",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "food search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/food/search?keyword=first",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"food",
+								"search"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "first"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create food",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\" : \"this is a another deals food new\",\r\n    \"description\" : \"this is food description\",\r\n    \"price\" : \"1700\",\r\n    \"calaory\" : \"4500\",\r\n    \"category\" : \"deals\",\r\n    \"discount\" : {\r\n        \"status\" : true,\r\n        \"percentage\" : 10\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base}}/food/create"
+					},
+					"response": []
+				},
+				{
+					"name": "update food",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\" : \"this is new description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/food/:foodId/update",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"food",
+								":foodId",
+								"update"
+							],
+							"variable": [
+								{
+									"key": "foodId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete food",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/food/:foodId/delete",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"food",
+								":foodId",
+								"delete"
+							],
+							"variable": [
+								{
+									"key": "foodId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "information",
+			"item": [
+				{
+					"name": "visitor count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base}}/visitorCount"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base",
+			"value": "http://127.0.0.1:4000/api/v1",
+			"type": "string"
+		}
+	]
+}

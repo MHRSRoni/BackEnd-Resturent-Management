@@ -1,5 +1,5 @@
 const FoodModel = require('./foodModel');
-const InfoModel = require('./foodModel');
+const InfoModel = require('./infoModel');
 
 
 
