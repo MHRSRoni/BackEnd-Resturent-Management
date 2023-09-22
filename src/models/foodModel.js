@@ -25,10 +25,11 @@ const foodSchema = new Schema({
         trim : true,
         required : true
     },
-    image : {
-        type : [String],
+    image : [{
+        type : String,
         required : true,
-    },
+        trim : true,
+    }],
     calaory : {
         type : String,
         required : true,
