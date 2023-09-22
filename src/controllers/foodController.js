@@ -1,4 +1,4 @@
-const { allFood, createFood, readFoodById, updateFoodById, deleteFoodById, readFoodByKeyWord, foodByCategory, getFoodForPage } = require("../services/foodService")
+const { allFood, createFood, readFoodById, updateFoodById, deleteFoodById, readFoodByKeyWord, foodByCategory, getFoodForPage, readRelatedFood } = require("../services/foodService")
 
 exports.getAllFoodController = async (req, res, next) => {
     const data = await allFood(req, next)
@@ -27,6 +27,11 @@ exports.deleteFoodByIdController = async (req, res, next) => {
 
 exports.readFoodByCategoryController = async (req, res, next) => {
     const data = await foodByCategory(req, next)
+    res.json(data)
+}
+
+exports.readRelatedFoodController = async (req, res, next) => {
+    const data = await readRelatedFood(req, next)
     res.json(data)
 }
 

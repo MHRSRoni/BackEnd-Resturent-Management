@@ -108,6 +108,24 @@ exports.foodByCategory = async (req, next) => {
     }
 }
 
+exports.readRelatedFood = async (req, next) => {
+    try {
+        const related = req.params?.relate
+        if(!related){
+            throw new BadRequestError('category not specified', 400, 'EB010501')
+        }
+        const data = await FoodModel.find({ category: related}).limit(5)
+        if(!data || data.length < 1){
+            throw new NotFoundError('food not found', 404, 'EB010502')
+        }
+        else{
+            return {status : 'Success', data: data}
+        }
+    } catch (error) {
+        next(error)
+    }
+}
+
 exports.readFoodByKeyWord = async (req, next) => {
     try {
         const keyword = req.query?.keyword.toLowerCase()

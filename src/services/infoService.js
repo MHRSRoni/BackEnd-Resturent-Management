@@ -11,7 +11,6 @@ exports.getVisitorCount = async (req, next) => {
         }
         return {status : "success", data : data}
     } catch (error) {
-        console.log(error)
         next(error)
     }
 }

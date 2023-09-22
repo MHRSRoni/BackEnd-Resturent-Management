@@ -9,6 +9,7 @@ router.get('/food', readFoodForPageController)
 router.get('/food/id/:foodId', readFoodByIdController);
 router.get('/food/search', readFoodByKeyWordController);
 router.get('/food/category/:category', readFoodByCategoryController);
+router.get('/food/related/:relate', readFoodByCategoryController);
 
 router.post('/food/create', createFoodController);
 router.put('/food/:foodId/update', updateFoodByIdController);

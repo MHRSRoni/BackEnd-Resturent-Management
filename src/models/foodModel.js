@@ -25,12 +25,15 @@ const foodSchema = new Schema({
         trim : true,
         required : true
     },
-    image : [{
-        type : String,
+    image : {
+        type : [String],
+        validate : {
+            validator : (item) => Array.isArray(item) && item.length > 0,
+            message : ' is required',
+        },
         required : true,
-        trim : true,
-    }],
-    calaory : {
+    },
+    calories : {
         type : String,
         required : true,
     },
