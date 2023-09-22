@@ -110,7 +110,7 @@ exports.foodByCategory = async (req, next) => {
 
 exports.readRelatedFood = async (req, next) => {
     try {
-        const related = req.params?.relate
+        const related = req.params?.related
         if(!related){
             throw new BadRequestError('category not specified', 400, 'EB010501')
         }
@@ -145,15 +145,16 @@ exports.readFoodByKeyWord = async (req, next) => {
 
 exports.getFoodForPage = async (req, next) => {
     try {
-        const page = req.query?.page
-        const pageSize = req.query?.pageSize
-        if(!page){
-            throw new NotFoundError('page not specified', 404, 'EB010701')
+        const pageSize = 2
+        const pageNumber = req.query?.pageNumber ?? 0
+        const search = req.query?.search
+        let data = null
+        if(!search){
+            data = await FoodModel.find().skip(parseInt(pageSize) * parseInt(pageNumber)).limit(parseInt(pageSize))
         }
-        if(!pageSize){
-            throw new NotFoundError('pageSize not specified', 404, 'EB010701')
-        }
-        const data = await FoodModel.find().skip(parseInt(pageSize) * (parseInt(page) - 1)).limit(parseInt(pageSize))
+        else{
+            data = await FoodModel.find({category : search}).skip(parseInt(pageSize) * parseInt(pageNumber)).limit(parseInt(pageSize))
+        }        
         if(data?.length < 1){
             throw new NotFoundError('food not found', 404, 'EB010702')
         }
