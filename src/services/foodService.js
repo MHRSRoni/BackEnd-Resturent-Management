@@ -146,19 +146,21 @@ exports.readFoodByKeyWord = async (req, next) => {
 exports.getFoodForPage = async (req, next) => {
     try {
         const pageSize = 12
-        const pageNumber = req.query?.pageNumber ?? 0
+        const pageNumber = req.query?.pageNumber ?? 1
         const search = req.query?.search
         let data = {}
         let total = 0
         if(!search){
             total = await FoodModel.find().count("total")
-            data = await FoodModel.find().skip(parseInt(pageSize) * parseInt(pageNumber)).limit(parseInt(pageSize))
+            data = await FoodModel.find().skip(parseInt(pageSize) * (pageNumber - 1) ).limit(parseInt(pageSize))
         }
         else{
+            
             total = await FoodModel.find({category : search}).count()
-            data = await FoodModel.find({category : search}).skip(parseInt(pageSize) * parseInt(pageNumber)).limit(parseInt(pageSize))
+            data = await FoodModel.find({category : search}).skip(parseInt(pageSize) * (pageNumber - 1)).limit(pageSize)
         }        
         if(data?.length < 1){
+            console.log(data)
             throw new NotFoundError('food not found', 404, 'EB010702')
         }
         totalPage = Math.ceil(parseInt(total) / pageSize)

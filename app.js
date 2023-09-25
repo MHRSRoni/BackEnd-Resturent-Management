@@ -75,6 +75,5 @@ const startApp = async (port, DB_NAME) => {
     }
 }
 
-startApp()
 
 module.exports = {startApp}
