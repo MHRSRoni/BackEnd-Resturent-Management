@@ -56,12 +56,14 @@ app.use(CustomErrorHandler())
 
 
 
-/**
+/** 
  * Start the server
  * @param {Number|PORT} port PORT of the server
  * @param {String|DB_NAME} DB_NAME Database name for the application
  *@example startApp(PORT, DB_NAME) // server starting function
  */
+
+ 
 const startApp = async (port, DB_NAME) => {
     try{
         app.listen(port, ()=>{
@@ -72,5 +74,7 @@ const startApp = async (port, DB_NAME) => {
         console.log('❌failed to start the server: '+error)
     }
 }
+
+startApp()
 
 module.exports = {startApp}

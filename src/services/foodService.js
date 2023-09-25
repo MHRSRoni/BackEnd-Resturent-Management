@@ -145,7 +145,7 @@ exports.readFoodByKeyWord = async (req, next) => {
 
 exports.getFoodForPage = async (req, next) => {
     try {
-        const pageSize = 2
+        const pageSize = 12
         const pageNumber = req.query?.pageNumber ?? 0
         const search = req.query?.search
         let data = {}
