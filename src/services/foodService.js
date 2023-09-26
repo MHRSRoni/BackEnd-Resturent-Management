@@ -148,16 +148,20 @@ exports.getFoodForPage = async (req, next) => {
         const pageSize = 12
         const pageNumber = req.query?.pageNumber ?? 1
         const search = req.query?.search
+        const category = req.query?.category
         let data = {}
         let total = 0
-        if(!search){
+        if(!search && !category) {
             total = await FoodModel.find().count("total")
             data = await FoodModel.find().skip(parseInt(pageSize) * (pageNumber - 1) ).limit(parseInt(pageSize))
         }
-        else{
+        else if(category && !search){
             
-            total = await FoodModel.find({category : search}).count()
-            data = await FoodModel.find({category : search}).skip(parseInt(pageSize) * (pageNumber - 1)).limit(pageSize)
+            total = await FoodModel.find({category : category}).count()
+            data = await FoodModel.find({category : category}).skip(parseInt(pageSize) * (pageNumber - 1)).limit(pageSize)
+        } else if(!category && search) {
+            total = await FoodModel.find({$or : [{$text : {$search : search}},{title : {$regex : regex}}]}).count()
+            data = await FoodModel.find({$or : [{$text : {$search : search}},{title : {$regex : regex}}]},{score : {$meta : 'textScore'}}).sort({score: {$meta : 'textScore'}}).skip(parseInt(pageSize) * (pageNumber - 1)).limit(pageSize)
         }        
         if(data?.length < 1){
             console.log(data)
