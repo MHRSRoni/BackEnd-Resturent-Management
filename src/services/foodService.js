@@ -148,6 +148,7 @@ exports.getFoodForPage = async (req, next) => {
         const pageSize = 12
         const pageNumber = req.query?.pageNumber ?? 1
         const search = req.query?.search
+        const regex = new RegExp(search, 'g')
         const category = req.query?.category
         let data = {}
         let total = 0
