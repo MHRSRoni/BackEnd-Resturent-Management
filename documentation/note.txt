@@ -1,1 +1,6 @@
 // food instock ki automate korbo naki manual thakbe
+
+1) customer => Rafat vai
+2) admin staff => hasib vai
+3) wishlist cartlist order => mredul vai
+4) review complain verification => monir 

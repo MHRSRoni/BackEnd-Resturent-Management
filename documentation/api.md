@@ -15,8 +15,6 @@
 | :----- | :------- | :----- | ----- | ----| -----|
 | Post  | /register |        |       | yes | |
 | Post  | /login    |        |       |     ||
-| Post  | /send-verification  | |   | yes  ||
-| Post  | /verify    |        |     | yes  ||
 | Get   | /profile | | | |customer|
 | Post  | /profile |    |     |yes  |customer|
 | Delete| /profile |  | | |customer|
@@ -51,8 +49,6 @@
 | method | endpoint | params | query | mail|access|
 | :----- | :------- | :----- | ----- | ----|------|
 |Post | /register |      | | yes| |
-|Post | /send-verification |      | | yes| |
-|Post | /verify |      | | | |
 |Get | /login |      | | yes| |
 |Get | /profile |      | | | staff|
 |Get | /profile | all     | | | admin|
@@ -82,8 +78,7 @@
 | :----- | :------- | :----- | ----- | ----|------|
 |Put | / | | | yes | admin|
 |get | / | | |  | admin|
-|Post | /send-verification |      | | yes| |
-|Post | /verify |      | | | |
+
 
 ### verifyRouter
 | method | endpoint | params | query | mail|access|
