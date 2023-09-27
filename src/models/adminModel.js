@@ -22,6 +22,9 @@ const adminSchema = new mongoose.Schema(
     profilePic: {
       type: String,
     },
+    otp:{
+      type: number,
+    },
     role: {
       type: String,
       default: "admin",

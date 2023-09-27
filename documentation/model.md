@@ -34,6 +34,7 @@
 - password | string
 - phoneNo | string | unique
 - profilePic | string
+- otp | number
 - role | string | admin
 
 ### staffModel
@@ -43,6 +44,7 @@
 - password | string
 - profilePic | string
 - phoneNo | string | unique
+- otp | number
 - salary | number | optional | ⚠️only admin can write
 - address | string
 

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const staffSchema = new mongoose.Schema(
   {
@@ -22,8 +22,11 @@ const staffSchema = new mongoose.Schema(
     profilePic: {
       type: String,
     },
-    salary:{
-        type: number
+    otp: {
+      type: number,
+    },
+    salary: {
+      type: number,
     },
     address: {
       type: String,
