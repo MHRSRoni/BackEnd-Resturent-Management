@@ -31,7 +31,8 @@
 
 - name | string
 - email | string | unique
-- phoneNo | string
+- password | string
+- phoneNo | string | unique
 - profilePic | string
 - role | string | admin
 
@@ -39,6 +40,7 @@
 
 - name | string
 - email | string | unique
+- password | string
 - profilePic | string
 - phoneNo | string | unique
 - salary | number | optional | ⚠️only admin can write
