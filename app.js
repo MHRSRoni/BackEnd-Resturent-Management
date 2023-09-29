@@ -10,6 +10,7 @@ const { NotFoundError } = require('custom-error-handlers/error')
 const { CustomErrorHandler } = require('custom-error-handlers')
 //router
 const router = require('./src/routers/api')
+const wishRouter = require('./src/routers/wishRouter')
 const customerRouter = require('./src/routers/customerRoute')
 
 
@@ -30,6 +31,7 @@ app.use(express.json())
 
 //routes
 app.use('/api/v1', router)
+app.use('/api/v1', wishRouter)
 app.use('/api/v1', customerRouter)
 
 //not found handeling

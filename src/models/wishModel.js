@@ -6,10 +6,10 @@ const wishSchema = mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         required : true
     },
-    foodId : {
+    foodId : [{
         type : mongoose.Schema.Types.ObjectId,
         required: true
-    }
+    }]
 },
     {
         timestamps : true,
@@ -18,6 +18,6 @@ const wishSchema = mongoose.Schema({
 
 )
 
-const wishModel = model('wishes', wishSchema);
+const wishModel = mongoose.model('wishes', wishSchema);
 
 module.exports = wishModel;
