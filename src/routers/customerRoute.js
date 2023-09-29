@@ -1,4 +1,4 @@
-const { customerLogin, sendOtpController, verifyOtpController, customerLoginWithPasswordController, customerLogoutController, customerProfileReadController, customerProfileUpdateController, customerPasswordUpdateController } = require('../controllers/customerController');
+const { sendOtpController, customerLoginController, customerLogoutController, customerProfileReadController, customerProfileUpdateController, customerPasswordUpdateController } = require('../controllers/customerController');
 const { isLogin } = require('../middlewares/auth');
 
 const router = require('express').Router();
@@ -6,11 +6,7 @@ const router = require('express').Router();
 //!Customer Login
 router.post('/otp-send', sendOtpController);
 
-router.get('/otp-verify', verifyOtpController);
-
-router.post('/login-with-password', customerLoginWithPasswordController);
-
-
+router.post('/customer/login', customerLoginController);
 
 router.get('/logout', customerLogoutController);
 

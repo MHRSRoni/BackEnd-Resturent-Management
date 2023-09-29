@@ -1,4 +1,4 @@
-const { customerLogin, sendOtpForLogin, verifyOtpForLogin, customerLoginWithPassword, customerLogout, customerProfileUpdate, customerPasswordUpdate, customerProfileRead } = require("../services/customerSevice");
+const { sendOtpForLogin, customerLogin, customerLogout, customerProfileUpdate, customerPasswordUpdate, customerProfileRead } = require("../services/customerSevice");
 
 
 exports.sendOtpController = async (req, res, next) => {
@@ -11,19 +11,9 @@ exports.sendOtpController = async (req, res, next) => {
     }
 };
 
-exports.verifyOtpController = async (req, res, next) => {
+exports.customerLoginController = async (req, res, next) => {
     try {
-        const result = await verifyOtpForLogin(req);
-
-        res.status(200).json(result)
-    } catch (error) {
-        next(error);
-    }
-};
-
-exports.customerLoginWithPasswordController = async (req, res, next) => {
-    try {
-        const result = await customerLoginWithPassword(req);
+        const result = await customerLogin(req);
 
         res.status(200).json(result)
     } catch (error) {

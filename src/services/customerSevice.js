@@ -20,70 +20,58 @@ exports.sendOtpForLogin = async (req) => {
     return { status: "success", message: "Email Send Success For Verification" }
 };
 
-//!Verify Otp For Login
-exports.verifyOtpForLogin = async (req) => {
-    const { email, otp } = req.query;
+//!Customer Login
+exports.customerLogin = async (req) => {
 
-    if (!otp) {
-        throw new ValidationError('OTP is required')
+    const { email, otp, password } = req.body;
+
+    if (password) {
+
+        //!Find Customer With Email
+        const customer = await customerModel.findOne({ email });
+
+        if (!customer) {
+            throw new ValidationError('User Not Found')
+        }
+
+        //!Match Password to Provided Password
+        const isMatch = await bcrypt.compare(password, customer.password);
+
+        if (!isMatch) {
+            throw new ValidationError('Email or Password incorrect')
+        }
+
+        //!Create Token
+        const token = await CreateToken(
+            email, customer._id, customer.role,
+            '24h'
+        );
+
+        return {
+            status: "success",
+            massage: "Login Seccess",
+            token
+        };
+    } else {
+
+        if (!otp) {
+            throw new ValidationError('OTP is required')
+        }
+
+        //!Call a function to validate OTP for login
+        await verifyOtpService(email, otp, customerModel);
+
+        //!Find Customer With Email
+        const customer = await customerModel.findOne({ email });
+
+        //!Create Token
+        const token = await CreateToken(
+            email, customer['_id'], customer['role'],
+            '24h'
+        );
+
+        return { status: "success", message: "Login Success", token }
     }
-
-    //!Call a function to validate OTP for login
-    await verifyOtpService(email, otp, customerModel);
-
-    //!Find Customer With Email
-    const customer = await customerModel.findOne({ email });
-
-    //!Create Token
-    const token = await CreateToken(
-        email, customer['_id'], customer['role'],
-        '24h'
-    );
-
-    return { status: "success", message: "Login Success", token }
-};
-
-//!Login With Password
-
-//!Customer Login Service With Password
-exports.customerLoginWithPassword = async (req) => {
-    const { email, password } = req.body;
-
-    if (!email) {
-        throw new ValidationError('Email is required')
-    }
-    if (!password) {
-        throw new ValidationError('Password is required')
-    }
-    if (password.length < 6) {
-        throw new ValidationError('Password must be at least 6 characters long')
-    }
-
-    //!Find Customer With Email
-    const user = await customerModel.findOne({ email });
-
-    if (!user) {
-        throw new ValidationError('User Not Found')
-    }
-
-    //!Match Password to Provided Password
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-        throw new ValidationError('Email or Password incorrect')
-    }
-
-    //!Create Token
-    const token = await CreateToken(
-        email, user._id, user.role,
-        '24h'
-    );
-
-    return {
-        status: "success",
-        massage: "Login Seccess",
-        token
-    };
 };
 
 //!Customer Logout
