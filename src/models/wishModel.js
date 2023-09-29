@@ -6,10 +6,10 @@ const wishSchema = mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         required : true
     },
-    foodId : {
+    foodId : [{
         type : mongoose.Schema.Types.ObjectId,
         required: true
-    }
+    }]
 },
     {
         timestamps : true,
