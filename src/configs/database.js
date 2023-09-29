@@ -8,12 +8,12 @@ const mongoose = require('mongoose')
 
 const connectDatabase = async (DB_NAME) => {
     try {
-        await mongoose.connect(process.env.DB_URI, { dbName: DB_NAME})
+        await mongoose.connect(process.env.DB_URI, { dbName: DB_NAME })
         console.log('✅Database connected successfully')
     } catch (error) {
         console.log('❌Database connection failed: ' + error)
     }
 }
 
-module.exports = {connectDatabase}
+module.exports = { connectDatabase }
 
