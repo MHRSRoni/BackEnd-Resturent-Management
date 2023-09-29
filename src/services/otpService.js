@@ -10,13 +10,12 @@ exports.sendOtpService = async (email, emailSubject, dataModel) => {
 
         const otp = Math.floor(100000 + Math.random() * 900000);
 
-        const verifyLink = `http://localhost:5000/api/v1/otp-verify?email=${email}&otp=${otp}`
+        // const verifyLink = `http://localhost:5000/api/v1/otp-verify?email=${email}&otp=${otp}`
 
         const emailData = {
             to: email,
             subject: emailSubject,
-            html: `Your OTP is: ${otp}.
-            Or <a href='${verifyLink}' target='_blank'>click here</a>`
+            html: `Your OTP is: ${otp}.`
         }
 
         await SendEmail(emailData);
