@@ -2,7 +2,7 @@ const wishModel = require('../models/wishModel');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
-
+// add a new food in wishlist
 exports.addWishListController = async (req, res) => {
     try {
         let customer_id = req.headers.id;
@@ -31,7 +31,7 @@ exports.addWishListController = async (req, res) => {
     }
 }
 
-
+// Get All WishList by id
 exports.getAllWishById = async (req, res) => {
     try {
         let customer_id = req.headers.id;
@@ -50,6 +50,7 @@ exports.getAllWishById = async (req, res) => {
     }
 }
 
+// Get All Wishlist Details
 exports.getWishListDetailsController = async (req, res) => {
     try {
         let customer_id = new ObjectId(req.headers.id)
@@ -88,6 +89,8 @@ exports.getWishListDetailsController = async (req, res) => {
 }
 
 
+
+// Remove the wish from the wishlist
 exports.removeWishListController = async (req, res) => {
     try {
 
