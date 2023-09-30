@@ -31,16 +31,20 @@
 
 - name | string
 - email | string | unique
-- phoneNo | string
+- password | string
+- phoneNo | string | unique
 - profilePic | string
+- otp | number
 - role | string | admin
 
 ### staffModel
 
 - name | string
 - email | string | unique
+- password | string
 - profilePic | string
 - phoneNo | string | unique
+- otp | number
 - salary | number | optional | ⚠️only admin can write
 - address | string
 

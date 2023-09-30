@@ -1,21 +1,18 @@
 //dependencies
 const express = require('express')
 //configuration
-const {log} = require('./src/configs/loger')
-const {secure} = require('./src/configs/security')
-const {connectDatabase} =require('./src/configs/database')
+const { log } = require('./src/configs/loger')
+const { secure } = require('./src/configs/security')
+const { connectDatabase } = require('./src/configs/database')
 require('dotenv').config()
 //errorHandler
-const {NotFoundError} = require('custom-error-handlers/error')
-const {CustomErrorHandler} = require('custom-error-handlers')
+const { NotFoundError } = require('custom-error-handlers/error')
+const { CustomErrorHandler } = require('custom-error-handlers')
 //router
 const router = require('./src/routers/api')
 const wishRouter = require('./src/routers/wishRouter')
 const cartRouter = require('./src/routers/cartRouter')
-
-
-
-
+const customerRouter = require('./src/routers/customerRoute')
 
 
 
@@ -33,10 +30,10 @@ app.use(express.json())
 app.use('/api/v1', router)
 app.use('/api/v1', wishRouter)
 app.use('/api/v1', cartRouter)
-
+app.use('/api/v1', customerRouter)
 
 //not found handeling
-app.use('*',(req, res, next)=>{
+app.use('*', (req, res, next) => {
     try {
         throw new NotFoundError('page not found', 404)
     } catch (error) {
@@ -68,17 +65,17 @@ app.use(CustomErrorHandler())
  *@example startApp(PORT, DB_NAME) // server starting function
  */
 
- 
+
 const startApp = async (port, DB_NAME) => {
-    try{
-        app.listen(port, ()=>{
-            console.log('✅listening on port '+port)
-                connectDatabase(DB_NAME) // database connection
-            })
+    try {
+        app.listen(port, () => {
+            console.log('✅listening on port ' + port)
+            connectDatabase(DB_NAME) // database connection
+        })
     } catch (error) {
-        console.log('❌failed to start the server: '+error)
+        console.log('❌failed to start the server: ' + error)
     }
 }
 
 
-module.exports = {startApp}
+module.exports = { startApp }
