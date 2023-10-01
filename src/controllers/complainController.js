@@ -86,3 +86,12 @@ const deleteComplainController = async (req, res, next) => {
         next(error)
     }
 }
+
+
+module.exports = {
+    createComplainController,
+    readAllComplainController,
+    readSingleComplainController,
+    readCustomerComplainController,
+    deleteComplainController
+}
