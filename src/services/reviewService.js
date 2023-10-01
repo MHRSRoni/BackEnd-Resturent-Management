@@ -1,6 +1,10 @@
 const { reviewModel } = require("../models/reviewModel")
 
 /**
+ * @typedef {string} ObjectId - A string representing a MongoDB ObjectId.
+ */
+
+/**
  * create a new review
  *
  * @param   {ObjectId}  foodId   which food you want to review
@@ -20,13 +24,13 @@ const createReviewService = async (foodId, comment, rating) => {
 }
 
 /**
- * get review data from review model
+ * read review data from review model
  *
- * @param   {ObjectId|"all"}  foodId  foodId to get review data
+ * @param   {ObjectId|"all"}  foodId  foodId or 'all' to get review data
  *@async use await before calling
  * @return  {object}          result object
  */
-const getReviewService = async (foodId) => {
+const readReviewService = async (foodId) => {
     //validation will be added
     let review = null
     if(foodId.toLowerCase() == "all"){
@@ -60,4 +64,4 @@ const deleteReviewService = async (foodId) => {
 }
 
 
-module.exports = {createReviewService, deleteReviewService, getReviewService,}
+module.exports = {createReviewService, deleteReviewService, readReviewService,}
