@@ -59,7 +59,7 @@ const deleteReviewController = async (req, res, next) => {
         //get the data from the request
         const reviewId = req.params?.reviewId
 
-        //get the review
+        //delete the review
         const result = await deleteReviewService(reviewId)
 
         //give the response with result
