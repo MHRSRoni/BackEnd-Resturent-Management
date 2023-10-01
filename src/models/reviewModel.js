@@ -2,11 +2,11 @@ const {Schema, model} = require('mongoose')
 
 const reviewSchema = new Schema({
     customerId : {
-        type : Schema.types.ObjectId,
+        type : Schema.Types.ObjectId,
         required : true,
     },
     foodId : {
-        type : Schema.types.ObjectId,
+        type : Schema.Types.ObjectId,
         requried : true,
     },
     comment : {

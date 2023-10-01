@@ -15,12 +15,14 @@ const { reviewModel } = require("../models/reviewModel")
  * @return  {object}           result object
  */
 const createReviewService = async (customerId, foodId, comment, rating) => {
+
     //validation will be added here
-    const review = await reviewModel.create({customerId,foodId, comment, rating}).select({_id : 0})
+    const review = await reviewModel.create({customerId,foodId, comment, rating})
     if(review){
         return {status : "success", operation : 'created', data : review}
     }
     return {status : "error", data : "falied to create review"}
+   
 
 }
 

@@ -1,7 +1,10 @@
 const { reviewRouter } = require('./reviewRouter')
 
 //this is the base router for all routes
-const router = require('express').Router()
+const baseRouter = require('express').Router()
 
 //review router
-router.use('/review', reviewRouter)
+baseRouter.use('/review', reviewRouter)
+baseRouter.use('/review', reviewRouter)
+
+module.exports = {baseRouter}

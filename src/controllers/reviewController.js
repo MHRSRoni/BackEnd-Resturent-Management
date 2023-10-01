@@ -3,12 +3,13 @@ const { createReviewService, readReviewService, deleteReviewService } = require(
 const createReviewController = async (req, res, next) => {
     try {
         //get the data from the request
+        const customerId = req.headers?.customerid
         const foodId = req.body?.foodId 
         const comment = req.body?.comment 
         const rating = req.body?.rating
 
         //create a new review
-        const result = await createReviewService(foodId, comment, rating)
+        const result = await createReviewService(customerId, foodId, comment, rating)
 
         //give the response with result
         return res.json(result)
