@@ -2,7 +2,7 @@ const { readAllReviewController, readSingleReviewController, createReviewControl
 
 const reviewRouter = require('express').Router()
 //read review 
-reviewRouter.get('/all', readAllReviewController)
+reviewRouter.get('/all/:foodId', readAllReviewController)
 reviewRouter.get('/:reviewId', readSingleReviewController)
 //create review
 reviewRouter.post('/create', createReviewController)
