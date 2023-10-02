@@ -1,7 +1,7 @@
 const { sendOtpController, customerLoginController, customerLogoutController, customerProfileReadController, customerProfileUpdateController, customerPasswordUpdateController, customerSendOtpForChangeEmailController, customerEmailUpdateController } = require('../controllers/customerController');
-const { isLogin } = require('../middlewares/auth');
+const { isLogin, giveAccessTo } = require('../middlewares/auth');
 
-const router = require('express').Router();
+const customerRouter = require('express').Router();
 
 //!Customer Login
 router.post('/customer/otp-send', sendOtpController);
@@ -10,16 +10,16 @@ router.post('/customer/login', customerLoginController);
 
 router.get('/logout', customerLogoutController);
 
-router.get('/customer/profile', isLogin, customerProfileReadController);
+router.get('/profile', isLogin, giveAccessTo(['admin','customer']), customerProfileReadController);
 
-router.put('/customer/password-update', isLogin, customerPasswordUpdateController);
+router.put('/password-update', isLogin, giveAccessTo('customer'), customerPasswordUpdateController);
 
-router.post('/customer/profile-update', isLogin, customerProfileUpdateController);
+router.post('/profile-update', isLogin, giveAccessTo('customer'), customerProfileUpdateController);
 
-router.post('/customer/otp-send-for-update-email', isLogin, customerSendOtpForChangeEmailController);
+router.post('/otp-send-for-update-email', isLogin, giveAccessTo('customer'), customerSendOtpForChangeEmailController);
 
-router.post('/customer/update-email', isLogin, customerEmailUpdateController);
+router.post('/update-email', isLogin, giveAccessTo('customer'), customerEmailUpdateController);
 
 
 
-module.exports = router;
+module.exports = {customerRouter};
