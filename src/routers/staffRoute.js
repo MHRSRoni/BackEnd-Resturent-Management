@@ -1,7 +1,7 @@
 const { staffRegisterController, staffLoginController, staffProfileController, staffOtpSendController, staffEmailUpdateController, staffProfileUpdateController, staffPasswordUpdateController } = require('../controllers/staffController');
 const { isLogin, isStaff } = require('../middlewares/auth');
 
-const router = require('express').Router();
+const staffRouter = require('express').Router();
 
 
 
@@ -9,15 +9,15 @@ router.post('/staff/register', staffRegisterController);
 
 router.post('/staff/login', staffLoginController);
 
-router.get('/staff/profile', isLogin, isStaff, staffProfileController);
+router.get('/staff/profile',  isLogin, giveAccessTo(['admin', 'staff']), staffProfileController);
 
-router.post('/staff/otp-send', isLogin, isStaff, staffOtpSendController);
+router.post('/staff/otp-send', isLogin, giveAccessTo('staff'), staffOtpSendController);
 
-router.put('/staff/email-update', isLogin, isStaff, staffEmailUpdateController);
+router.put('/staff/email-update', isLogin, giveAccessTo('staff'), staffEmailUpdateController);
 
-router.post('/staff/profile-update', isLogin, isStaff, staffProfileUpdateController);
+router.post('/staff/profile-update', isLogin, giveAccessTo('staff'), staffProfileUpdateController);
 
-router.put('/staff/password-update', isLogin, isStaff, staffPasswordUpdateController);
+router.put('/staff/password-update', isLogin, giveAccessTo('staff'), staffPasswordUpdateController);
 
 
-module.exports = router;
+module.exports = {staffRouter};
