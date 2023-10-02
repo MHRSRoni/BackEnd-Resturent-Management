@@ -1,4 +1,5 @@
 const { readAllComplainController, readCustomerComplainController, readSingleComplainController, createComplainController, deleteComplainController } = require('../controllers/complainController')
+const { giveAccessTo } = require('../middlewares/auth')
 
 const complainRouter = require('express').Router()
 
@@ -7,16 +8,16 @@ const complainRouter = require('express').Router()
 
 //========read============
 //for admin
-complainRouter.get('/all', readAllComplainController)
+complainRouter.get('/all', giveAccessTo('admin'), readAllComplainController)
 //for customer
-complainRouter.get('/all', readCustomerComplainController)
+complainRouter.get('/all', giveAccessTo('customer'), readCustomerComplainController)
 //by id
-complainRouter.get('/:complainId', readSingleComplainController)
+complainRouter.get('/:complainId', giveAccessTo(['customer', 'admin']), readSingleComplainController)
 
 //========create============
-complainRouter.post('/create', createComplainController)
+complainRouter.post('/create', giveAccessTo('customer'), createComplainController)
 
 //========delete============
-complainRouter.delete('/delete/:complainId', deleteComplainController)
+complainRouter.delete('/delete/:complainId', giveAccessTo('admin'), deleteComplainController)
 
 module.exports = {complainRouter}

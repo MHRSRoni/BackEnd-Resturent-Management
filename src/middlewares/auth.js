@@ -70,8 +70,8 @@ exports.giveAccessTo = (role) => (req, res, next) => {
                 //give access to the user
                 next();
             }else{
-                //throw an error
-                throw new AuthorizationError('permission denied')
+                //check for next matched route
+                next('route')
             }
 
         //if role is an Array
@@ -81,8 +81,8 @@ exports.giveAccessTo = (role) => (req, res, next) => {
                 //give access to the user
                 next();
             }else{
-                //throw an error
-                throw new AuthorizationError('permission denied')
+                //check for next matched route
+                next('route')
             }
 
         //if no role passed
