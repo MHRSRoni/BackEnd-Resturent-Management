@@ -1,43 +1,78 @@
-const mongoose = require("mongoose");
+const { Schema, model } = require('mongoose');
 
-const staffSchema = new mongoose.Schema(
-  {
+const staffSchema = new Schema({
     name: {
-      type: String,
-      required: true,
+        type: String,
+        required: true
     },
     email: {
-      type: String,
-      required: true,
-      unique: true,
+        type: String,
+        required: true,
+        unique: true
     },
     password: {
-      type: String,
-      required: true,
+        type: String,
+        required: true
     },
-    phn_num: {
-      type: String,
-      unique: true,
-    },
-    profilePic: {
-      type: String,
-    },
-    otp: {
-      type: number,
-    },
-    salary: {
-      type: number,
+    phoneNo: {
+        type: String,
+        required: true,
+        unique: true
     },
     address: {
-      type: String,
+        type: String,
+        required: true
     },
-  },
-  {
-    timestamps: true,
-    versionKey: false,
-  }
-);
+    dateOfBirth: {
+        type: Date,
+        required: true
+    },
+    gender: {
+        type: String,
+        required: true
+    },
+    nationalId: {
+        type: String,
+        required: true
+    },
+    backAccountNumber: {
+        type: String,
+        required: true
+    },
+    employeeId: {
+        type: String,
+        required: true
+    },
+    position: {
+        type: String,
+        required: true
+    },
+    salary: {
+        type: Number,
+        required: true
+    },
+    insurance: {
+        type: Boolean,
+        default: false
+    },
+    healthStatus: {
+        type: String,
+        required: true
+    },
+    joiningDate: {
+        type: Date
+    },
+    role: {
+        type: String,
+        default: 'staff'
+    },
+    otp: {
+        type: Number,
+        default: 0
+    }
 
-const staffModel = mongoose.model("staff", staffSchema);
+}, { timestamps: true, versionKey: false });
+
+const staffModel = model('staffs', staffSchema);
 
 module.exports = staffModel;

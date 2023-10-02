@@ -13,7 +13,15 @@ const router = require('./src/routers/api')
 const wishRouter = require('./src/routers/wishRouter')
 const cartRouter = require('./src/routers/cartRouter')
 const customerRouter = require('./src/routers/customerRoute')
+const adminRouter = require('./src/routers/adminRoute')
+const staffRouter = require('./src/routers/staffRoute')
+
+
+
+
+
 const { baseRouter } = require('./src/routers')
+
 
 
 
@@ -33,6 +41,8 @@ app.use('/api/v1', router)
 app.use('/api/v1', wishRouter)
 app.use('/api/v1', cartRouter)
 app.use('/api/v1', customerRouter)
+app.use('/api/v1', adminRouter)
+app.use('/api/v1', staffRouter)
 
 //not found handeling
 app.use('*', (req, res, next) => {
