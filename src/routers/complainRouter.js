@@ -17,6 +17,6 @@ complainRouter.get('/:complainId', readSingleComplainController)
 complainRouter.post('/create', createComplainController)
 
 //========delete============
-complainRouter.delete('/delete', deleteComplainController)
+complainRouter.delete('/delete/:complainId', deleteComplainController)
 
 module.exports = {complainRouter}
