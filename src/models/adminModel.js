@@ -27,7 +27,8 @@ const adminSchema = new Schema({
         default: 'admin'
     },
     otp: {
-        type: Number
+        type: Number,
+        default: 0
     }
 }, { timestamps: true, versionKey: 'false' })
 
