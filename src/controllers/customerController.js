@@ -1,4 +1,4 @@
-const { sendOtpForLogin, customerLogin, customerLogout, customerProfileUpdate, customerPasswordUpdate, customerProfileRead } = require("../services/customerSevice");
+const { sendOtpForLogin, customerLogin, customerLogout, customerProfileUpdate, customerPasswordUpdate, customerProfileRead, customerSendOtpForChangeEmailService, customerEmailUpdateService } = require("../services/customerSevice");
 
 
 exports.sendOtpController = async (req, res, next) => {
@@ -31,6 +31,16 @@ exports.customerLogoutController = async (req, res, next) => {
     }
 };
 
+exports.customerProfileReadController = async (req, res, next) => {
+    try {
+        const result = await customerProfileRead(req);
+
+        res.status(200).json(result)
+    } catch (error) {
+        next(error);
+    }
+};
+
 exports.customerProfileUpdateController = async (req, res, next) => {
     try {
         const result = await customerProfileUpdate(req);
@@ -51,9 +61,19 @@ exports.customerPasswordUpdateController = async (req, res, next) => {
     }
 };
 
-exports.customerProfileReadController = async (req, res, next) => {
+exports.customerSendOtpForChangeEmailController = async (req, res, next) => {
     try {
-        const result = await customerProfileRead(req);
+        const result = await customerSendOtpForChangeEmailService(req);
+
+        res.status(200).json(result)
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.customerEmailUpdateController = async (req, res, next) => {
+    try {
+        const result = await customerEmailUpdateService(req);
 
         res.status(200).json(result)
     } catch (error) {

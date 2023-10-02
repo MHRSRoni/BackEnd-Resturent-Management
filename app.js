@@ -11,6 +11,7 @@ const { CustomErrorHandler } = require('custom-error-handlers')
 //router
 const router = require('./src/routers/api')
 const customerRouter = require('./src/routers/customerRoute')
+const adminRouter = require('./src/routers/adminRoute')
 
 
 
@@ -31,6 +32,7 @@ app.use(express.json())
 //routes
 app.use('/api/v1', router)
 app.use('/api/v1', customerRouter)
+app.use('/api/v1', adminRouter)
 
 //not found handeling
 app.use('*', (req, res, next) => {
