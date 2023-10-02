@@ -1,3 +1,4 @@
+const customerProfileModel = require("../models/customerProfileModel");
 const { adminLoginService, adminProfileService, adminProfileUpdateService, adminEmailUpdate, adminOtpSendService, adminPasswordUpdateService } = require("../services/adminService");
 
 
@@ -56,6 +57,28 @@ exports.adminPasswordUpdateController = async (req, res, next) => {
         const result = await adminPasswordUpdateService(req);
 
         res.status(200).json(result);
+    } catch (error) {
+        next(error);
+    }
+};
+
+//!Get All Customer
+exports.getAllCustomerController = async (req, res, next) => {
+    try {
+        const customers = await customerProfileModel.find();
+
+        res.status(200).json(customers)
+    } catch (error) {
+        next(error);
+    }
+};
+
+//!Get All Staff 
+exports.getAllStaffController = async (req, res, next) => {
+    try {
+        const staffs = await staffModel.find();
+
+        res.status(200).json(staffs)
     } catch (error) {
         next(error);
     }

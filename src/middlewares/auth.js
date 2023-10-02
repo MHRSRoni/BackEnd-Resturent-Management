@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { ValidationError } = require('custom-error-handlers/error');
 const adminModel = require('../models/adminModel');
+const staffModel = require('../models/staffModel');
 
 //!Is Login
 exports.isLogin = async (req, res, next) => {
@@ -27,13 +28,26 @@ exports.isLogin = async (req, res, next) => {
 //!Is Admin
 exports.isAdmin = async (req, res, next) => {
     try {
-        const user = await adminModel.findOne({ id: req.headers.id });
+        const user = await adminModel.findOne({ _id: req.headers.id });
 
-        if (user == ! 'admin') {
+        if (user.role !== 'admin') {
             throw new ValidationError('You are not Admin')
         }
 
+        next()
+    } catch (error) {
+        next(error);
+    }
+};
 
+//!Is Staff
+exports.isStaff = async (req, res, next) => {
+    try {
+        const user = await staffModel.findById({ _id: req.headers.id });
+
+        if (user.role !== 'staff') {
+            throw new ValidationError('You are not Staff')
+        }
         next()
     } catch (error) {
         next(error);

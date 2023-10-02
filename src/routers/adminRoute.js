@@ -1,4 +1,4 @@
-const { adminLoginController, adminProfileController, adminProfileUpdateController, adminEmailUpdateController, adminOtpSendController, adminPasswordUpdateController } = require('../controllers/adminController');
+const { adminLoginController, adminProfileController, adminProfileUpdateController, adminEmailUpdateController, adminOtpSendController, adminPasswordUpdateController, getAllCustomerController, getAllStaffController } = require('../controllers/adminController');
 const { isLogin, isAdmin } = require('../middlewares/auth');
 
 const router = require('express').Router();
@@ -17,5 +17,8 @@ router.post('/admin/profile-update', isLogin, isAdmin, adminProfileUpdateControl
 
 router.put('/admin/password-update', isLogin, isAdmin, adminPasswordUpdateController);
 
+router.get('/admin/all-customers', isLogin, isAdmin, getAllCustomerController)
+
+router.get('/admin/all-staffs', isLogin, isAdmin, getAllStaffController);
 
 module.exports = router;
