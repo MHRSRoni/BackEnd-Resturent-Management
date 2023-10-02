@@ -1,16 +1,17 @@
 const { readAllReviewController, readSingleReviewController, createReviewController, deleteReviewController } = require('../controllers/reviewController')
+const { isLogin, giveAccessTo } = require('../middlewares/auth')
 
 const reviewRouter = require('express').Router()
 //========read============
 // for food
-reviewRouter.get('/all/:foodId', readAllReviewController)
+reviewRouter.get('/all/:foodId', isLogin, giveAccessTo(['admin', 'customer']), readAllReviewController)
 // by id
-reviewRouter.get('/:reviewId', readSingleReviewController)
+reviewRouter.get('/:reviewId', isLogin, giveAccessTo(['admin', 'customer']), readSingleReviewController)
 
 //========create============
-reviewRouter.post('/create', createReviewController)
+reviewRouter.post('/create', isLogin, giveAccessTo( 'customer'), createReviewController)
 
 //========delete============
-reviewRouter.delete('/:reviewId', deleteReviewController)
+reviewRouter.delete('/:reviewId', isLogin, giveAccessTo('admin'), deleteReviewController)
 
 module.exports = {reviewRouter}
