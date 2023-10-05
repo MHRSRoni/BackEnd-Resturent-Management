@@ -12,7 +12,7 @@ adminRouter.post('/login', adminLoginController);
 
 adminRouter.get('/profile', isLogin, isAdmin, adminProfileController);
 
-adminRouter.post('/otp-send', isLogin, isAdmin, adminOtpSendController);
+adminRouter.post('/otp-send', adminOtpSendController);
 
 adminRouter.put('/email-update', isLogin, isAdmin, adminEmailUpdateController);
 

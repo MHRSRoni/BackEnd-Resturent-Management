@@ -6,10 +6,10 @@ const { giveAccessTo } = require('../middlewares/auth');
 
 // wishList routes
 
-wishRouter.post('/wishlist-add/:foodId', giveAccessTo('customer'), wishController.addWishListController)
-wishRouter.get('/wish-by-id', giveAccessTo('customer'), wishController.getAllWishById)
-wishRouter.get('/wishlist-details', giveAccessTo('customer'), wishController.getWishListDetailsController)
-wishRouter.delete('/wishlist-remove/:foodId', giveAccessTo('customer'), wishController.removeWishListController)
+wishRouter.post('/add/:foodId', giveAccessTo('customer'), wishController.addWishListController)
+wishRouter.get('/', giveAccessTo('customer'), wishController.getAllWishById)
+wishRouter.get('/details', giveAccessTo('customer'), wishController.getWishListDetailsController)
+wishRouter.delete('/remove/:foodId', giveAccessTo('customer'), wishController.removeWishListController)
 
 
 

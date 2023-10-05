@@ -38,7 +38,7 @@ app.use('*', (req, res, next) => {
 })
 
 //error handlers
-app.use(CustomErrorHandler())
+app.use(CustomErrorHandler({log : true}))
 
 
 

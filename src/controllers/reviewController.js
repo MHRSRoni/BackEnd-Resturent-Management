@@ -3,7 +3,7 @@ const { createReviewService, readReviewService, deleteReviewService } = require(
 const createReviewController = async (req, res, next) => {
     try {
         //get the data from the request
-        const customerId = req.headers?.customerid
+        const customerId = req.headers?.id
         const foodId = req.body?.foodId 
         const comment = req.body?.comment 
         const rating = req.body?.rating

@@ -8,9 +8,9 @@ const { wishRouter } = require('./wishRouter');
 const customerRouter = require('express').Router();
 
 //!Customer Login
-customerRouter.post('/customer/otp-send', sendOtpController);
+customerRouter.post('/otp-send', sendOtpController);
 
-customerRouter.post('/customer/login', customerLoginController);
+customerRouter.post('/login', customerLoginController);
 
 customerRouter.get('/logout', customerLogoutController);
 
