@@ -1,16 +1,17 @@
 const express = require('express');
 const wishRouter = express.Router();
-const wishController = require('../controllers/wishController')
+const wishController = require('../controllers/wishController');
+const { giveAccessTo } = require('../middlewares/auth');
 
 
 // wishList routes
 
-wishRouter.post('/wishlist-add/:foodId', wishController.addWishListController)
-wishRouter.get('/wish-by-id', wishController.getAllWishById)
-wishRouter.get('/wishlist-details', wishController.getWishListDetailsController)
-wishRouter.delete('/wishlist-remove/:foodId', wishController.removeWishListController)
+wishRouter.post('/add/:foodId', giveAccessTo('customer'), wishController.addWishListController)
+wishRouter.get('/', giveAccessTo('customer'), wishController.getAllWishById)
+wishRouter.get('/details', giveAccessTo('customer'), wishController.getWishListDetailsController)
+wishRouter.delete('/remove/:foodId', giveAccessTo('customer'), wishController.removeWishListController)
 
 
 
 
-module.exports = wishRouter;
+module.exports = {wishRouter};

@@ -1,11 +1,23 @@
-const { complainRouter } = require('./complainRouter')
-const { reviewRouter } = require('./reviewRouter')
+const { adminRouter } = require('./adminRouter')
+const { customerRouter } = require('./customerRouter')
+const {foodRouter} = require('./foodRouter')
+const { infoRouter } = require('./infoRouter')
+const { staffRouter } = require('./staffRouter')
 
 //this is the base router for all routes
 const baseRouter = require('express').Router()
 
-//review router
-baseRouter.use('/review', reviewRouter)
-baseRouter.use('/complain', complainRouter)
+//admin router
+baseRouter.use('/admin', adminRouter)
+//customer router
+baseRouter.use('/customer', customerRouter)
+//staff router
+baseRouter.use('/staff', staffRouter)
+//food router
+baseRouter.use('/food', foodRouter)
+//info router
+infoRouter.use('/info', infoRouter)
+
+
 
 module.exports = {baseRouter}

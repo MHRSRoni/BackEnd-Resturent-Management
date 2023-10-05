@@ -11,6 +11,7 @@ const { ValidationError } = require('custom-error-handlers/error')
 //!Send Otp For Login
 exports.sendOtpForLogin = async (req) => {
     const { email } = req.body;
+    //validation will be added here
 
     const emailSubject = 'Verification For Login'
 
@@ -128,7 +129,7 @@ exports.customerPasswordUpdate = async (req) => {
     if (!confirmPassword) {
         throw new ValidationError('Confirm Password is required')
     }
-    if (!password === confirmPassword) {
+    if (!(password === confirmPassword)) {
         throw new ValidationError('Password and Confirm Password must be same')
     }
 

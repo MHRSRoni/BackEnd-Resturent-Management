@@ -1,16 +1,16 @@
-const express = require('express');
-const cartController = require('../controllers/cartController')
-const cartRouter = express.Router();
+const cartRouter = require('express').Router();
+const cartController = require('../controllers/cartController');
+const { isLogin, giveAccessTo } = require('../middlewares/auth');
 
 
 
 // Cart Routes
-cartRouter.post('/cart-add/:foodId/:qty', cartController.addCartListController)
-cartRouter.get('/cartlist-by-id', cartController.getAllCartListById)
-cartRouter.put('/cartlist-update/:foodId/:qty', cartController.updateCartListController)
-cartRouter.delete('/cart-item-remove/:foodId', cartController.removeCartById)
+cartRouter.post('/add/:foodId/:qty',isLogin, giveAccessTo('customer'), cartController.addCartListController)
+cartRouter.get('/', giveAccessTo('customer'), cartController.getAllCartListById)
+cartRouter.put('/update/:foodId/:qty', giveAccessTo('customer'), cartController.updateCartListController)
+cartRouter.delete('/remove/:foodId', giveAccessTo('customer'), cartController.removeCartById)
 
 
 
 
-module.exports = cartRouter;
+module.exports = {cartRouter};

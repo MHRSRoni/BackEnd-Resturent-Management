@@ -3,7 +3,7 @@ const { createComplainService, readComplainService, deleteComplainService } = re
 const createComplainController = async (req, res, next) => {
     try {
         //get the data from the request
-        const customerId = req.headers?.customerid
+        const customerId = req.headers?.id
         const type = req.body?.type 
         const message = req.body?.message 
         const tableNo = req.body?.tableNo

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { ValidationError } = require('custom-error-handlers/error');
+const { ValidationError, AuthorizationError } = require('custom-error-handlers/error');
 const adminModel = require('../models/adminModel');
 const staffModel = require('../models/staffModel');
 
@@ -54,3 +54,44 @@ exports.isStaff = async (req, res, next) => {
     }
 };
 
+/**
+ * permission giving middleware
+ *
+ * @param   {string|string[]}  role  the role you want to give access
+ *
+ */
+exports.giveAccessTo = (role) => (req, res, next) => {
+
+    try{
+        //if role is string
+        if(typeof role === 'string'){
+            //match with user role
+            if(role === req.headers.role){
+                //give access to the user
+                next();
+            }else{
+                //check for next matched route
+                next('route')
+            }
+
+        //if role is an Array
+        }else if(role instanceof Array){
+            //match with user role
+            if(role.includes(req.headers.role)){
+                //give access to the user
+                next();
+            }else{
+                //check for next matched route
+                next('route')
+            }
+
+        //if no role passed
+        }else{
+            throw new AuthorizationError('something went wrong')
+        }
+
+    }catch(e){
+        //pass error to the error handler
+        next(e);
+    }
+}
