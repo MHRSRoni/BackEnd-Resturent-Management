@@ -1,5 +1,6 @@
 const SendEmail = require("../configs/SendEmail");
-const { ValidationError } = require('custom-error-handlers/error')
+const { ValidationError } = require('custom-error-handlers/error');
+const { Otp } = require("../utils/Otp");
 
 //!Send Email For Verification Service
 exports.sendOtpService = async (email, emailSubject, dataModel, id) => {
@@ -7,9 +8,6 @@ exports.sendOtpService = async (email, emailSubject, dataModel, id) => {
         return { status: "fail", error: "Email is required" }
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000);
-
-    // const verifyLink = `http://localhost:5000/api/v1/otp-verify?email=${email}&otp=${otp}`
 
     const emailData = {
         to: email,
@@ -19,12 +17,7 @@ exports.sendOtpService = async (email, emailSubject, dataModel, id) => {
 
     await SendEmail(emailData);
 
-    if (id) {
-        await dataModel.updateOne({ _id: id }, { $set: { otp } }, { upsert: true });
-
-    } else {
-        await dataModel.updateOne({ email }, { $set: { otp } }, { upsert: true });
-    }
+    
 
 };
 

@@ -1,4 +1,5 @@
 const { adminRouter } = require('./adminRouter')
+const { authRouter } = require('./authRouter')
 const { customerRouter } = require('./customerRouter')
 const {foodRouter} = require('./foodRouter')
 const { infoRouter } = require('./infoRouter')
@@ -17,7 +18,8 @@ baseRouter.use('/staff', staffRouter)
 baseRouter.use('/food', foodRouter)
 //info router
 infoRouter.use('/info', infoRouter)
-
+//auth router
+baseRouter.use('/auth', authRouter)
 
 
 module.exports = {baseRouter}
