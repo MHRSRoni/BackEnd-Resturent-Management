@@ -1,4 +1,4 @@
-const { sendOtpController, customerLoginController, customerLogoutController, customerProfileReadController, customerProfileUpdateController, customerPasswordUpdateController, customerSendOtpForChangeEmailController, customerEmailUpdateController } = require('../controllers/customerController');
+const { customerLoginController, customerLogoutController, customerProfileController, customerProfileUpdateController, customerPasswordUpdateController, customerEmailUpdateController, customerRegisterController, customerSendVerifyEmailController, customerVerifyEmailController, customerForgetPasswordController } = require('../controllers/customerController');
 const { isLogin, giveAccessTo } = require('../middlewares/auth');
 const { cartRouter } = require('./cartRouter');
 const { complainRouter } = require('./complainRouter');
@@ -7,22 +7,35 @@ const { wishRouter } = require('./wishRouter');
 
 const customerRouter = require('express').Router();
 
-//!Customer Login
-customerRouter.post('/otp-send', sendOtpController);
+//!Customer Register
+customerRouter.post('/register', customerRegisterController)
 
+//!Send Email Verification
+customerRouter.post('/send-verification', customerSendVerifyEmailController)
+
+//!Verify Email Verification
+customerRouter.get('/auth/verify', customerVerifyEmailController)
+
+//!Customer Login
 customerRouter.post('/login', customerLoginController);
 
+//!Customer Logout 
 customerRouter.get('/logout', customerLogoutController);
 
-customerRouter.get('/profile', isLogin, giveAccessTo(['admin','customer']), customerProfileReadController);
+//!Customer Profile
+customerRouter.get('/profile', isLogin, giveAccessTo(['admin', 'customer']), customerProfileController);
 
-customerRouter.put('/password-update', isLogin, giveAccessTo('customer'), customerPasswordUpdateController);
-
+//!Customer Profile Update
 customerRouter.post('/profile-update', isLogin, giveAccessTo('customer'), customerProfileUpdateController);
 
-customerRouter.post('/otp-send-for-update-email', isLogin, giveAccessTo('customer'), customerSendOtpForChangeEmailController);
+//!Customer Password Update
+customerRouter.put('/password-update', isLogin, giveAccessTo('customer'), customerPasswordUpdateController);
 
+//!Customer Email Update
 customerRouter.post('/update-email', isLogin, giveAccessTo('customer'), customerEmailUpdateController);
+
+//!Customer Forget Password
+customerRouter.put('/forget-password', customerForgetPasswordController)
 
 
 
@@ -40,4 +53,4 @@ customerRouter.use('/cart', isLogin, cartRouter)
 
 
 
-module.exports = {customerRouter};
+module.exports = { customerRouter };

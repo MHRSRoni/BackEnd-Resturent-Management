@@ -19,8 +19,6 @@ exports.adminLoginService = async (req) => {
     //!Match Password to Provided Password
     const isMatch = await bcrypt.compare(password, admin.password);
 
-    console.log(password);
-
     if (!isMatch) {
         throw new ValidationError('Email or Password incorrect')
     }

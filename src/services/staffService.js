@@ -3,21 +3,22 @@ const bcrypt = require('bcrypt');
 const staffModel = require('../models/staffModel');
 const { CreateToken } = require('../configs/CreateToken');
 const { sendOtpService, verifyOtpService } = require('./otpService');
+const { sendVerifyEmail, verifyEmail } = require('../utils/verifyEmail');
 
 
 //!Staff Register Service
 exports.staffRegisterService = async (req) => {
-    const { name, email, password, phoneNo, address, dateOfBirth, gender, nationalId, backAccountNumber, employeeId, position, salary, insurance, healthStatus, joiningDate }
+    const { name, email, username, password, phoneNo, address, dateOfBirth, gender, nationalId, backAccountNumber, employeeId, position, salary, insurance, healthStatus, joiningDate }
         = req.body;
 
-    if (!name || !email || !password || !phoneNo || !address || !dateOfBirth || !nationalId || !backAccountNumber || !employeeId || !position || !salary || !healthStatus || !joiningDate || !gender || !insurance) {
+    if (!name || !email || !username || !password || !phoneNo || !address || !dateOfBirth || !nationalId || !backAccountNumber || !employeeId || !position || !salary || !healthStatus || !joiningDate || !gender || !insurance) {
 
         throw new ValidationError('Required field is empty');
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    const staff = await staffModel.create({ name, email, password: hashedPassword, phoneNo, address, dateOfBirth, gender, nationalId, backAccountNumber, employeeId, position, salary, insurance, healthStatus, joiningDate })
+    const staff = await staffModel.create({ name, email, username, password: hashedPassword, phoneNo, address, dateOfBirth, gender, nationalId, backAccountNumber, employeeId, position, salary, insurance, healthStatus, joiningDate })
 
     return {
         status: 'Success',
@@ -35,7 +36,7 @@ exports.staffLoginService = async (req) => {
     const staff = await staffModel.findOne({ email });
 
     if (!staff) {
-        throw new ValidationError('User Not Found')
+        throw new ValidationError('Staff Not Found')
     }
 
     //!Match Password to Provided Password
@@ -67,37 +68,14 @@ exports.staffProfileService = async (req) => {
     return { status: 'Success', data: admin }
 };
 
-//!Send Otp For Staff Email Verification
-exports.staffOtpSendService = async (req) => {
-    const { email } = req.body;
-    const staffId = req.headers.id;
-    const emailSubject = 'Verification For Change Staff Email';
-
-    const existingEmail = await staffModel.findOne({ email });
-
-    if (existingEmail) {
-        throw new ValidationError('Email already in use')
-    }
-
-    await sendOtpService(email, emailSubject, staffModel, staffId);
-
-    return { status: 'Success', massage: 'Email sent successfully' }
-
-};
-
 //!Staff Email Update
 exports.staffEmailUpdate = async (req) => {
-    const { email, otp } = req.body;
+    const { email } = req.body;
     const staffId = req.headers.id;
 
     if (!email) {
         throw new ValidationError('Email is required')
     }
-    if (!otp) {
-        throw new ValidationError('Otp is required')
-    }
-
-    await verifyOtpService(email, otp, staffModel, staffId);
 
     const emailUpdate = await staffModel.updateOne(
         { _id: staffId },

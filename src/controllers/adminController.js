@@ -1,5 +1,57 @@
+const adminModel = require("../models/adminModel");
 const customerProfileModel = require("../models/customerProfileModel");
-const { adminLoginService, adminProfileService, adminProfileUpdateService, adminEmailUpdate, adminOtpSendService, adminPasswordUpdateService } = require("../services/adminService");
+const { adminLoginService, adminProfileService, adminProfileUpdateService, adminOtpSendService } = require("../services/adminService");
+const { ValidationError, NotFoundError } = require('custom-error-handlers/error');
+const { passwordUpdateService, emailUpdateService } = require("../services/commonUserService");
+const { sendVerifyEmail } = require("../utils/verifyEmail");
+
+
+//!Send Email For Email Verification
+exports.adminSendEmailForVerifyController = async (req, res, next) => {
+    try {
+        const { email, emailSubject } = req.body;
+
+        const existingEmail = await adminModel.findOne({ email });
+
+        if (!existingEmail) {
+            throw new NotFoundError('Admin Not Found')
+        }
+
+        //!Call a function to send Mail
+        await sendVerifyEmail(email, adminModel, emailSubject, 'admin')
+
+        res.status(200).json({ status: "success", message: "Email Send Success For Verification" })
+    } catch (error) {
+        next(error);
+    }
+};
+
+//!Verify Email For Email Verification
+exports.adminVerifyEmailController = async (req) => {
+    try {
+        const { email, otp } = req.query;
+
+        if (!email) {
+            throw new ValidationError('Email is required');
+        }
+        if (!otp) {
+            throw new ValidationError('Otp is required');
+        }
+
+        const existingEmail = await adminModel.findOne({ email });
+
+        if (!existingEmail) {
+            throw new ValidationError('Customer does not exist');
+        }
+
+        await verifyEmail(email, adminModel, otp);
+
+        return { status: 'Success', massage: 'Email Verification Success' }
+    } catch (error) {
+        next(error);
+    }
+
+};
 
 
 exports.adminLoginController = async (req, res, next) => {
@@ -34,7 +86,11 @@ exports.adminOtpSendController = async (req, res, next) => {
 
 exports.adminEmailUpdateController = async (req, res, next) => {
     try {
-        const result = await adminEmailUpdate(req);
+        const { email } = req.body;
+
+        const adminId = req.headers.id;
+
+        const result = await emailUpdateService(adminModel, adminId, email);
 
         res.status(200).json(result);
     } catch (error) {
@@ -54,9 +110,15 @@ exports.adminProfileUpdateController = async (req, res, next) => {
 
 exports.adminPasswordUpdateController = async (req, res, next) => {
     try {
-        const result = await adminPasswordUpdateService(req);
+        const { currentPassword, newPassword, confirmPassword } = req.body;
 
-        res.status(200).json(result);
+        const adminId = req.headers.id;
+
+        const result = await passwordUpdateService(
+            adminModel, adminId, currentPassword, newPassword, confirmPassword
+        );
+
+        res.status(200).json(result)
     } catch (error) {
         next(error);
     }
@@ -83,6 +145,7 @@ exports.getAllStaffController = async (req, res, next) => {
         next(error);
     }
 };
+
 
 
 
