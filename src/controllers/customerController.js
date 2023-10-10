@@ -1,9 +1,30 @@
-const { sendOtpForLogin, customerLogin, customerLogout, customerProfileUpdate, customerPasswordUpdate, customerProfileRead, customerSendOtpForChangeEmailService, customerEmailUpdateService } = require("../services/customerSevice");
+const customerModel = require("../models/customerModel");
+const { customerLoginService, customerLogoutService, customerProfileUpdateService, customerProfileService, customerRegisterService, sendEmailForVerify, verifyEmailService } = require("../services/customerSevice");
+const { passwordUpdateService, emailUpdateService, forgetPasswordService } = require("../services/commonUserService");
 
-
-exports.sendOtpController = async (req, res, next) => {
+exports.customerRegisterController = async (req, res, next) => {
     try {
-        const result = await sendOtpForLogin(req);
+        const result = await customerRegisterService(req);
+
+        res.status(200).json(result)
+    } catch (error) {
+        next(error)
+    }
+};
+
+exports.customerSendVerifyEmailController = async (req, res, next) => {
+    try {
+        const result = await sendEmailForVerify(req);
+
+        res.status(200).json(result)
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.customerVerifyEmailController = async (req, res, next) => {
+    try {
+        const result = await verifyEmailService(req);
 
         res.status(200).json(result)
     } catch (error) {
@@ -13,9 +34,17 @@ exports.sendOtpController = async (req, res, next) => {
 
 exports.customerLoginController = async (req, res, next) => {
     try {
-        const result = await customerLogin(req);
+        const result = await customerLoginService(req);
 
-        res.status(200).json(result)
+        if (result.status === 'success') {
+            res.cookie('token', result.token);
+
+            return res.status(200).json(result)
+        } else {
+            return res.status(200).json(result)
+        }
+
+
     } catch (error) {
         next(error);
     }
@@ -23,17 +52,19 @@ exports.customerLoginController = async (req, res, next) => {
 
 exports.customerLogoutController = async (req, res, next) => {
     try {
-        const result = await customerLogout(req);
+        const result = await customerLogoutService(req);
 
-        res.status(200).json(result)
+        res.clearCookie('token');
+
+        return res.status(200).json(result)
     } catch (error) {
         next(error);
     }
 };
 
-exports.customerProfileReadController = async (req, res, next) => {
+exports.customerProfileController = async (req, res, next) => {
     try {
-        const result = await customerProfileRead(req);
+        const result = await customerProfileService(req);
 
         res.status(200).json(result)
     } catch (error) {
@@ -43,7 +74,7 @@ exports.customerProfileReadController = async (req, res, next) => {
 
 exports.customerProfileUpdateController = async (req, res, next) => {
     try {
-        const result = await customerProfileUpdate(req);
+        const result = await customerProfileUpdateService(req);
 
         res.status(200).json(result)
     } catch (error) {
@@ -53,17 +84,13 @@ exports.customerProfileUpdateController = async (req, res, next) => {
 
 exports.customerPasswordUpdateController = async (req, res, next) => {
     try {
-        const result = await customerPasswordUpdate(req);
+        const { currentPassword, newPassword, confirmPassword } = req.body;
 
-        res.status(200).json(result)
-    } catch (error) {
-        next(error);
-    }
-};
+        const customerId = req.headers.id;
 
-exports.customerSendOtpForChangeEmailController = async (req, res, next) => {
-    try {
-        const result = await customerSendOtpForChangeEmailService(req);
+        const result = await passwordUpdateService(
+            customerModel, customerId, currentPassword, newPassword, confirmPassword
+        );
 
         res.status(200).json(result)
     } catch (error) {
@@ -73,9 +100,25 @@ exports.customerSendOtpForChangeEmailController = async (req, res, next) => {
 
 exports.customerEmailUpdateController = async (req, res, next) => {
     try {
-        const result = await customerEmailUpdateService(req);
+        const { email } = req.body;
+
+        const customerId = req.headers.id;
+
+        const result = await emailUpdateService(customerModel, customerId, email);
 
         res.status(200).json(result)
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.customerForgetPasswordController = async (req, res, next) => {
+    try {
+        const { email, newPassword, confirmPassword } = req.body;
+
+        const result = await forgetPasswordService(customerModel, email, newPassword, confirmPassword);
+
+        res.status(200).json(result);
     } catch (error) {
         next(error);
     }

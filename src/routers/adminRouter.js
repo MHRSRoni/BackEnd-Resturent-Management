@@ -1,10 +1,15 @@
-const { adminLoginController, adminProfileController, adminProfileUpdateController, adminEmailUpdateController, adminOtpSendController, adminPasswordUpdateController, getAllCustomerController, getAllStaffController } = require('../controllers/adminController');
+const { adminLoginController, adminProfileController, adminProfileUpdateController, adminEmailUpdateController, adminOtpSendController, adminPasswordUpdateController, getAllCustomerController, getAllStaffController, adminSendEmailForVerifyController, adminVerifyEmailController } = require('../controllers/adminController');
 const { isLogin, isAdmin } = require('../middlewares/auth');
 const { complainRouter } = require('./complainRouter');
 const { customerRouter } = require('./customerRouter');
-const {reviewRouter} = require('./reviewRouter');
+const { reviewRouter } = require('./reviewRouter');
 const { staffRouter } = require('./staffRouter');
 const adminRouter = require('express').Router();
+
+
+adminRouter.post('/send-otp', adminSendEmailForVerifyController);
+
+adminRouter.get('/verify-otp', adminVerifyEmailController);
 
 
 //!Admin Login
@@ -42,4 +47,4 @@ adminRouter.use('/complain', isLogin, complainRouter)
 
 
 
-module.exports = {adminRouter};
+module.exports = { adminRouter };

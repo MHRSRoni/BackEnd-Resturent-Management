@@ -11,8 +11,8 @@ const { CustomErrorHandler } = require('custom-error-handlers')
 //router
 const { baseRouter } = require('./src/routers')
 
-
-
+//cookieParser
+const cookieParser = require('cookie-parser')
 
 
 const app = express()
@@ -38,9 +38,10 @@ app.use('*', (req, res, next) => {
 })
 
 //error handlers
-app.use(CustomErrorHandler({log : true}))
+app.use(CustomErrorHandler({ log: true }))
 
-
+//cookieParser
+app.use(cookieParser())
 
 
 /**

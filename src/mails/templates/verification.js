@@ -68,8 +68,8 @@ const verificationTemplate = (email, otp, role) => {
         <h4>Hi ${'there'},</h4>
         <p>Your OTP is:</p>
         <div class="otp-box">${otp}</div>
-        <a class="btn" href="${process.env.BACKEND_URL}/auth/verify/${role}?email=${email}&otp=${otp}&subject=Verification">Verify Email</a>
-        <h5>Thank's for Signing up,</h4>
+        <a class="btn" href="${process.env.BACKEND_URL}/${role}/auth/verify?email=${email}&otp=${otp}" target="_blank">Verify Email</a>
+        <h5>Thank's for Regitration</h4>
     </div>
 </body>
 </html>

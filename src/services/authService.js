@@ -9,41 +9,39 @@ const { Otp } = require("../utils/Otp")
 
 const sendOtpService = async (role, identifier, subject) => {
 
-    
-
-    const otp = new Otp({role , identifier })
+    const otp = new Otp({ role, identifier })
 
     const saved = await otp.save()
 
-    if (saved ) {
+    if (saved) {
         const email = await otp.getEmail()
         const mailTemplate = generateSignInOtpTemplate(email, otp.code, role)
         const emailBody = {
-            to : email,
-            subject : subject,
-            html : mailTemplate
+            to: email,
+            subject: subject,
+            html: mailTemplate
         }
         SendEmail(emailBody)
-        return {status : 'saved', otp : otp.code}
+        return { status: 'saved', otp: otp.code }
     }
     else {
-        return {status : 'failed', }
+        return { status: 'failed', }
     }
 }
 
-const verifyOtpService = async (code, role, identifier) => { 
-    const otp = new Otp({role , identifier})
+const verifyOtpService = async (code, role, identifier) => {
+    const otp = new Otp({ role, identifier })
 
     const email = await otp.getEmail()
     const id = otp.isEmail ? null : identifier
 
     const verified = await otp.verify(code)
-    if (verified ) {
+    if (verified) {
         const token = await CreateToken(email, id, role, '24h')
-        return {status : 'verified', token : token}
+        return { status: 'verified', token: token }
     }
     else {
-        return {status : 'unverified'}
+        return { status: 'unverified' }
     }
 }
 
@@ -52,9 +50,9 @@ const usernameAvailable = async (username, role) => {
     try {
         const model = role === 'admin' ? adminModel :
             role === 'customer' ? customerModel :
-            role === 'staff' ? staffModel : null;
-        const user = await model.findOne({username})
-        if(user) {
+                role === 'staff' ? staffModel : null;
+        const user = await model.findOne({ username })
+        if (user) {
             return false
         }
 
