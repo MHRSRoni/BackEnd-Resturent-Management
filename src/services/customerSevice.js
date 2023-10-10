@@ -124,9 +124,12 @@ exports.customerLoginService = async (req) => {
             '24h'
         );
 
+        const findUsername = await customerModel.findOne({ username }, { username: 1, _id: 0 })
+
         return {
             status: "success",
             massage: "Login Seccess",
+            data: findUsername,
             token
         };
     } else if (email) {
@@ -154,9 +157,12 @@ exports.customerLoginService = async (req) => {
             '24h'
         );
 
+        const findUsername2 = await customerModel.findOne({ email }, { username: 1, _id: 0 });
+
         return {
             status: "success",
             massage: "Login Seccess",
+            data: findUsername2,
             token
         };
     } else {
