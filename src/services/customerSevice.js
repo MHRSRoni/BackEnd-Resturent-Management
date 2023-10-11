@@ -99,75 +99,65 @@ exports.customerLoginService = async (req) => {
 
     const { email, username, password } = req.body;
 
+    let customer;
+    let findUsername;
+    let findImage;
+
     if (username) {
         //!Find Customer With Username
-        const customer = await customerModel.findOne({ username });
+        customer = await customerModel.findOne({ username });
 
         if (!customer) {
-            throw new NotFoundError('User Not Found')
+            throw new NotFoundError('Customer Not Found')
         }
 
-        //!Match Password to Provided Password
-        const isMatch = await bcrypt.compare(password, customer.password);
+        findUsername = await customerModel.findOne({ username }, { username: 1, _id: 0 });
 
-        if (!isMatch) {
-            throw new ValidationError('Username or Password incorrect')
-        }
-
-        if (customer.status !== 'verified') {
-            throw new AuthenticationError('Your Email is not verified. Please Verify your email')
-        }
-
-        //!Create Token
-        const token = await CreateToken(
-            customer.email, customer._id, customer.role,
-            '24h'
-        );
-
-        const findUsername = await customerModel.findOne({ username }, { username: 1, _id: 0 })
-
-        return {
-            status: "success",
-            massage: "Login Seccess",
-            data: findUsername,
-            token
-        };
-    } else if (email) {
-        // !Find Customer With Email
-        const customer = await customerModel.findOne({ email });
+        findImage = await customerProfileModel.findOne(
+            { customerId: customer._id },
+            { profilePic: 1, _id: 0 })
+    } if (email) {
+        //!Find Customer With Email
+        customer = await customerModel.findOne({ email });
 
         if (!customer) {
-            throw new NotFoundError('User Not Found')
+            throw new NotFoundError('Customer Not Found')
         }
 
-        //!Match Password to Provided Password
-        const isMatch = await bcrypt.compare(password, customer.password);
+        findUsername = await customerModel.findOne({ email }, { username: 1, _id: 0 });
 
-        if (!isMatch) {
-            throw new ValidationError('Email or Password incorrect')
-        }
-
-        if (customer.status !== 'verified') {
-            throw new AuthenticationError('Your Email is not verified. Please Verify your email')
-        }
-
-        //!Create Token
-        const token = await CreateToken(
-            email, customer._id, customer.role,
-            '24h'
-        );
-
-        const findUsername2 = await customerModel.findOne({ email }, { username: 1, _id: 0 });
-
-        return {
-            status: "success",
-            massage: "Login Seccess",
-            data: findUsername2,
-            token
-        };
+        findImage = await customerProfileModel.findOne(
+            { customerId: customer._id },
+            { profilePic: 1, _id: 0 })
     } else {
-        return { massage: "Something went wrong" }
+        return { status: 'fail', error: 'Something went wrong' }
     }
+
+    //!Match Password to Provided Password
+    const isMatch = await bcrypt.compare(password, customer.password);
+
+    if (!isMatch) {
+        throw new ValidationError('Username or Password incorrect')
+    }
+
+    if (customer.status !== 'verified') {
+        throw new AuthenticationError('Your Email is not verified. Please Verify your email')
+    }
+
+    //!Create Token
+    const token = await CreateToken(
+        customer.email, customer._id, customer.role,
+        '24h'
+    );
+
+    return {
+        status: "success",
+        massage: "Login Seccess",
+        findUsername,
+        findImage,
+        token
+    };
+
 };
 
 //!Customer Logout

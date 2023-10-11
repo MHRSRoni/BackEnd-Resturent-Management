@@ -1,10 +1,6 @@
 const { Schema, model } = require('mongoose');
 
 const customerSchema = new Schema({
-    // name: {
-    //     type: String,
-    //     required: true
-    // },
     username: {
         type: String,
         required: true,
@@ -14,6 +10,11 @@ const customerSchema = new Schema({
         type: String,
         required: true,
         unique: true
+
+    },
+    status: {
+        type: String,
+        default: 'unverified'
     },
     password: {
         type: String,
@@ -31,10 +32,6 @@ const customerSchema = new Schema({
         type: String,
         default: 'customer'
     },
-    status: {
-        type: String,
-        default: 'unverified'
-    }
 }, { timestamps: true, versionKey: false });
 
 const customerModel = model('customers', customerSchema);
