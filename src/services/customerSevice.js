@@ -153,8 +153,7 @@ exports.customerLoginService = async (req) => {
     return {
         status: "success",
         massage: "Login Seccess",
-        findUsername,
-        findImage,
+        data: [findUsername, findImage],
         token
     };
 
