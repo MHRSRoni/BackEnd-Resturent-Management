@@ -100,8 +100,8 @@ exports.customerLoginService = async (req) => {
     const { email, username, password } = req.body;
 
     let customer;
-    let findUsername;
-    let findImage;
+    let user;
+    let userImage;
 
     if (username) {
         //!Find Customer With Username
@@ -111,9 +111,10 @@ exports.customerLoginService = async (req) => {
             throw new NotFoundError('Customer Not Found')
         }
 
-        findUsername = await customerModel.findOne({ username }, { username: 1, _id: 0 });
+        user = await customerModel.findOne({ username },
+            { username: 1, email: 1, status: 1, ban: 1, role: 1, _id: 0 });
 
-        findImage = await customerProfileModel.findOne(
+        userImage = await customerProfileModel.findOne(
             { customerId: customer._id },
             { profilePic: 1, _id: 0 })
     } if (email) {
@@ -124,13 +125,18 @@ exports.customerLoginService = async (req) => {
             throw new NotFoundError('Customer Not Found')
         }
 
-        findUsername = await customerModel.findOne({ email }, { username: 1, _id: 0 });
+        user = await customerModel.findOne({ email },
+            { username: 1, email: 1, status: 1, ban: 1, role: 1, _id: 0 });
 
-        findImage = await customerProfileModel.findOne(
+        userImage = await customerProfileModel.findOne(
             { customerId: customer._id },
             { profilePic: 1, _id: 0 })
     } else {
         return { status: 'fail', error: 'Something went wrong' }
+    }
+
+    if (customer.ban === true) {
+        throw new ValidationError('You are ban. Please contact with admin.')
     }
 
     //!Match Password to Provided Password
@@ -153,7 +159,14 @@ exports.customerLoginService = async (req) => {
     return {
         status: "success",
         massage: "Login Seccess",
-        data: [findUsername, findImage],
+        data: {
+            username: user.username,
+            email: user.email,
+            status: user.status,
+            role: user.role,
+            ban: user.ban,
+            image: userImage.profilePic
+        },
         token
     };
 
