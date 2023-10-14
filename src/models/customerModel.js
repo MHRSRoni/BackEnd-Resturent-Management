@@ -20,8 +20,13 @@ const customerSchema = new Schema({
         required: true
     },
     otp: {
-        type: Number,
-        default: 0
+        code: {
+            type: Number,
+            default: 0
+        },
+        type: {
+            type: String,
+        }
     },
     ban: {
         type: Boolean,
