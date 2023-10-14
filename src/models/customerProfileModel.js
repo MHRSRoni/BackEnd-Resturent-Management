@@ -6,6 +6,14 @@ const customerProfileSchema = new Schema({
         ref: 'customers',
         required: true,
     },
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
     phoneNo: {
         type: String,
         unique: true,
