@@ -99,7 +99,6 @@ exports.customerLoginService = async (req) => {
 
     const { email, username, password } = req.body;
 
-
     let customer;
     let user;
     let userImage;
@@ -126,7 +125,6 @@ exports.customerLoginService = async (req) => {
             throw new ValidationError('Username or Password incorrect')
         }
 
-
     } if (email) {
         //!Find Customer With Email
         customer = await customerModel.findOne({ email });
@@ -149,8 +147,6 @@ exports.customerLoginService = async (req) => {
             throw new ValidationError('Email or Password incorrect')
         }
 
-    } else {
-        return { status: 'fail', error: 'Something went wrong' }
     }
 
     if (customer.status !== 'verified') {
