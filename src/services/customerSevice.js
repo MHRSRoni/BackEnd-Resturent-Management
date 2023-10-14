@@ -204,20 +204,45 @@ exports.customerProfileService = async (req) => {
 
 //!Customer Profile Update Service
 exports.customerProfileUpdateService = async (req) => {
-    const reqBody = req.body;
+    const { firstName, lastName, phoneNo, gender, address, profilePic } = req.body;
     const customerId = req.headers.id;
 
-    //!Push Customer ID
-    reqBody.customerId = customerId
+    if (!firstName) {
+        throw new ValidationError('First Name is required')
+    }
+    if (!lastName) {
+        throw new ValidationError('Last Name is required')
+    }
+    if (!phoneNo) {
+        throw new ValidationError('Phone Number is required')
+    }
+    if (!gender) {
+        throw new ValidationError('Gender is required')
+    }
+    if (!address) {
+        throw new ValidationError('Address is required')
+    }
+    if (!profilePic) {
+        throw new ValidationError('Profile Picture is required')
+    }
 
-    //!Find And Update Customer Profile
-    const profile = await customerProfileModel.updateOne(
-        { customerId },
-        { $set: reqBody },
-        { upsert: true }
-    );
+    const customerPhone = await customerProfileModel.findOne({ phoneNo });
 
-    return { status: "success", message: "Profile Save Changed!", data: profile };
+    const customer = await customerProfileModel.findOne({ customerId });
+
+    if (customer?.phoneNo !== customerPhone?.phoneNo) {
+        throw new ValidationError('Phone number already exists')
+    } else {
+        //!Find And Update Customer Profile
+        await customerProfileModel.updateOne(
+            { customerId },
+            { customerId, firstName, lastName, phoneNo, gender, address, profilePic },
+            { upsert: true }
+        );
+    }
+
+
+    return { status: "success", message: "Profile Save Changed!" };
 };
 
 //!Customer Password Update
