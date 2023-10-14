@@ -99,6 +99,7 @@ exports.customerLoginService = async (req) => {
 
     const { email, username, password } = req.body;
 
+
     let customer;
     let user;
     let userImage;
@@ -116,7 +117,16 @@ exports.customerLoginService = async (req) => {
 
         userImage = await customerProfileModel.findOne(
             { customerId: customer._id },
-            { profilePic: 1, _id: 0 })
+            { profilePic: 1, _id: 0 });
+
+        //!Match Password to Provided Password
+        const isMatch = await bcrypt.compare(password, customer.password);
+
+        if (!isMatch) {
+            throw new ValidationError('Username or Password incorrect')
+        }
+
+
     } if (email) {
         //!Find Customer With Email
         customer = await customerModel.findOne({ email });
@@ -130,24 +140,25 @@ exports.customerLoginService = async (req) => {
 
         userImage = await customerProfileModel.findOne(
             { customerId: customer._id },
-            { profilePic: 1, _id: 0 })
+            { profilePic: 1, _id: 0 });
+
+        //!Match Password to Provided Password
+        const isMatch = await bcrypt.compare(password, customer.password);
+
+        if (!isMatch) {
+            throw new ValidationError('Email or Password incorrect')
+        }
+
     } else {
         return { status: 'fail', error: 'Something went wrong' }
     }
 
-    if (customer.ban === true) {
-        throw new ValidationError('You are ban. Please contact with admin.')
-    }
-
-    //!Match Password to Provided Password
-    const isMatch = await bcrypt.compare(password, customer.password);
-
-    if (!isMatch) {
-        throw new ValidationError('Username or Password incorrect')
-    }
-
     if (customer.status !== 'verified') {
         throw new AuthenticationError('Your Email is not verified. Please Verify your email')
+    }
+
+    if (customer.ban === true) {
+        throw new ValidationError('You are ban. Please contact with admin.')
     }
 
     //!Create Token
@@ -165,7 +176,7 @@ exports.customerLoginService = async (req) => {
             status: user.status,
             role: user.role,
             ban: user.ban,
-            image: userImage.profilePic
+            image: userImage
         },
         token
     };
