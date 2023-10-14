@@ -1,6 +1,6 @@
 const customerModel = require("../models/customerModel");
-const { customerLoginService, customerLogoutService, customerProfileUpdateService, customerProfileService, customerRegisterService, sendEmailForVerify, verifyEmailService } = require("../services/customerSevice");
-const { passwordUpdateService, emailUpdateService, forgetPasswordService } = require("../services/commonUserService");
+const { customerLoginService, customerLogoutService, customerProfileUpdateService, customerProfileService, customerRegisterService, sendEmailForVerify, verifyEmailService, customerPasswordUpdate } = require("../services/customerSevice");
+const { passwordUpdateService, emailUpdateService } = require("../services/commonUserService");
 
 exports.customerRegisterController = async (req, res, next) => {
     try {
@@ -114,9 +114,8 @@ exports.customerEmailUpdateController = async (req, res, next) => {
 
 exports.customerForgetPasswordController = async (req, res, next) => {
     try {
-        const { email, newPassword, confirmPassword } = req.body;
 
-        const result = await forgetPasswordService(customerModel, email, newPassword, confirmPassword);
+        const result = await customerPasswordUpdate(req);
 
         res.status(200).json(result);
     } catch (error) {

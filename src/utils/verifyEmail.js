@@ -16,23 +16,29 @@ exports.sendVerifyEmail = async (email, dataModel, emailSubject, role, id) => {
     await SendEmail(emailData);
 
     if (id) {
-        await dataModel.updateOne({ _id: id }, { $set: { otp } });
+        await dataModel.findOneAndUpdate(
+            { _id: id },
+            { $set: { "otp.code": otp } }
+        );
     } else {
-        await dataModel.updateOne({ email }, { $set: { otp } });
+        await dataModel.findOneAndUpdate(
+            { email },
+            { $set: { "otp.code": otp, 'otp.type': 'nai' } }
+        );
     }
 
     return { status: 'Success', massage: 'Verification Email Send Success' }
 
 };
 
-exports.verifyEmail = async (email, dataModel, otp, id) => {
+exports.verifyEmail = async (email, dataModel, otp, emailSubject, id) => {
 
     let verify;
 
     if (id) {
-        verify = await dataModel.findOne({ _id: id, otp });
+        verify = await dataModel.findOne({ _id: id, 'otp.code': otp });
     } else {
-        verify = await dataModel.findOne({ email, otp });
+        verify = await dataModel.findOne({ email, 'otp.code': otp });
     }
 
     if (verify) {
@@ -44,10 +50,14 @@ exports.verifyEmail = async (email, dataModel, otp, id) => {
         }
 
         if (id) {
-            await dataModel.updateOne({ _id: id }, { $set: { otp: '0' } })
+            await dataModel.findOneAndUpdate(
+                { _id: id }, { $set: { 'otp.code': '0' } }
+            );
         } else {
-            await dataModel.updateOne({ email: email }, { $set: { otp: '0' } })
-            await dataModel.updateOne({ email: email }, { $set: { status: 'verified' } })
+            await dataModel.findOneAndUpdate(
+                { email: email },
+                { $set: { 'otp.code': '0', status: 'verified', 'otp.type': emailSubject } }
+            )
         }
 
     } else {

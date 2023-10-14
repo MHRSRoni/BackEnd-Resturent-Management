@@ -73,7 +73,7 @@ exports.sendEmailForVerify = async (req) => {
 
 //!Verify Email For Email Verification
 exports.verifyEmailService = async (req) => {
-    const { email, otp } = req.query;
+    const { email, otp, emailSubject } = req.query;
 
     if (!email) {
         throw new ValidationError('Email is required');
@@ -82,13 +82,7 @@ exports.verifyEmailService = async (req) => {
         throw new ValidationError('Otp is required');
     }
 
-    const existingEmail = await customerModel.findOne({ email });
-
-    if (!existingEmail) {
-        throw new ValidationError('Customer does not exist');
-    }
-
-    await verifyEmail(email, customerModel, otp);
+    await verifyEmail(email, customerModel, otp, emailSubject);
 
     return { status: 'Success', massage: 'Email Verification Success' }
 
@@ -246,27 +240,37 @@ exports.customerProfileUpdateService = async (req) => {
 
 //!Customer Password Update
 exports.customerPasswordUpdate = async (req) => {
-    const { password, confirmPassword } = req.body;
-    const customerEmail = req.headers.email;
+    const { email, newPassword, confirmPassword } = req.body;
 
-    if (!password) {
-        throw new ValidationError('Password is required')
+    if (!email) {
+        throw new ValidationError('Email is required')
     }
-    if (password.length < 6) {
-        throw new ValidationError('Password must be at least 6 characters long')
+    if (!newPassword) {
+        throw new ValidationError('New Password is required')
+    }
+    if (newPassword.length < 6) {
+        throw new ValidationError('New Password must be at least 6 characters long')
     }
     if (!confirmPassword) {
         throw new ValidationError('Confirm Password is required')
     }
-    if (!(password === confirmPassword)) {
-        throw new ValidationError('Password and Confirm Password must be same')
+    if (!(newPassword === confirmPassword)) {
+        throw new ValidationError('New Password and Confirm Password must be same')
     }
 
     //!Password Hash
-    const hashedPassword = await bcrypt.hash(password, 12)
+    const hashedPassword = await bcrypt.hash(newPassword, 12)
 
     //!find And Update Customer Password
-    await customerModel.updateOne({ email: customerEmail }, { $set: { password: hashedPassword } }, { upsert: true });
+    const passwordReset = await customerModel.findOneAndUpdate(
+        { email, 'otp.type': 'Password Reset' },
+        { $set: { password: hashedPassword, 'otp.type': 'nai' } }
+
+    );
+
+    if (!passwordReset) {
+        throw new ValidationError('Password Reset Verification Failed')
+    }
 
     return { status: "success", message: "Password Save Changed!" }
 

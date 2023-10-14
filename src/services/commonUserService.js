@@ -49,27 +49,27 @@ exports.emailUpdateService = async (datamodel, id, email) => {
 
 };
 
-exports.forgetPasswordService = async (datamodel, email, newPassword, confirmPassword) => {
-    if (!email) {
-        throw new ValidationError('Email is required')
-    }
-    if (!newPassword) {
-        throw new ValidationError('New Password is required')
-    }
-    if (newPassword.length < 6) {
-        throw new ValidationError('Password must be at least 6 characters')
-    }
-    if (!confirmPassword) {
-        throw new ValidationError('Confirm Password is required');
-    }
-    if (newPassword !== confirmPassword) {
-        throw new ValidationError('New Password and Confirm Password must be the same')
-    }
+// exports.forgetPasswordService = async (datamodel, email, newPassword, confirmPassword) => {
+//     if (!email) {
+//         throw new ValidationError('Email is required')
+//     }
+//     if (!newPassword) {
+//         throw new ValidationError('New Password is required')
+//     }
+//     if (newPassword.length < 6) {
+//         throw new ValidationError('Password must be at least 6 characters')
+//     }
+//     if (!confirmPassword) {
+//         throw new ValidationError('Confirm Password is required');
+//     }
+//     if (newPassword !== confirmPassword) {
+//         throw new ValidationError('New Password and Confirm Password must be the same')
+//     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 12);
+//     const hashedPassword = await bcrypt.hash(newPassword, 12);
 
-    await datamodel.updateOne({ email }, { password: hashedPassword });
+//     await datamodel.updateOne({ email }, { password: hashedPassword });
 
-    return { status: 'success', message: 'Password Save Changed!' }
+//     return { status: 'success', message: 'Password Save Changed!' }
 
-};
+// };
