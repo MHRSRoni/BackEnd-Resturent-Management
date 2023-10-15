@@ -36,14 +36,12 @@ exports.customerLoginController = async (req, res, next) => {
     try {
         const result = await customerLoginService(req);
 
-        console.log(result.token)
-
         if (result.status === 'success') {
             res.cookie('token', result.token,
                 {
                     sameSite: 'none',
                     httpOnly: true,
-                    // secure: true
+                    secure: true
                 });
 
 
