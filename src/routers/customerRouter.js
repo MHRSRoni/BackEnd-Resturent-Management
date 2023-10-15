@@ -38,6 +38,14 @@ customerRouter.post('/update-email', isLogin, giveAccessTo('customer'), customer
 customerRouter.put('/forget-password', customerForgetPasswordController)
 
 
+//!test
+customerRouter.get('/test', (req, res) => {
+    res.cookie('test', 'test')
+
+    res.json({ success: true })
+})
+
+
 
 //review router
 customerRouter.use('/review', isLogin, reviewRouter)

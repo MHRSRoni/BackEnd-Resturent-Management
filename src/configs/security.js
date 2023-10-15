@@ -1,7 +1,7 @@
 const helmet = require('helmet');
 const hpp = require('hpp');
 const cors = require('cors');
-const {rateLimit} = require('express-rate-limit');
+const { rateLimit } = require('express-rate-limit');
 
 const reqPerMin = 100
 
@@ -10,9 +10,9 @@ const limiter = rateLimit({
     limit: reqPerMin,
     legacyHeaders: false,
     standardHeaders: 'draft-7',
-    message : 'You can only request 100 times per minute'
+    message: 'You can only request 100 times per minute'
 
-    })
+})
 
 /**
  * Security implementation for the application
@@ -20,9 +20,13 @@ const limiter = rateLimit({
  * @example secure(app)
  */
 
-exports.secure = (app) =>{
+exports.secure = (app) => {
     app.use(helmet())
     app.use(hpp())
-    app.use(cors({credentials: true, origin : 'http://localhost:5173'}))
     app.use(limiter)
+
+    app.use(cors({
+        origin: 'http://127.0.0.1:5173',
+        credentials: true
+    }))
 } 
