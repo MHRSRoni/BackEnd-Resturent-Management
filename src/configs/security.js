@@ -23,6 +23,6 @@ const limiter = rateLimit({
 exports.secure = (app) =>{
     app.use(helmet())
     app.use(hpp())
-    app.use(cors())
+    app.use(cors({credentials: true}))
     app.use(limiter)
 } 
