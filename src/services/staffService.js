@@ -8,7 +8,7 @@ const { sendVerifyEmail, verifyEmail } = require('../utils/verifyEmail');
 
 //!Staff Register Service
 exports.staffRegisterService = async (req) => {
-    const { name, email, username, password, phoneNo, address, dateOfBirth, gender, nationalId, backAccountNumber, employeeId, position, salary, insurance, healthStatus, joiningDate }
+    const { name, email, username, password, phoneNo, profilePic, nidProofPic, address, dateOfBirth, gender, nationalId, backAccountNumber, employeeId, position, salary, insurance, healthStatus, joiningDate }
         = req.body;
 
     if (!name || !email || !username || !password || !phoneNo || !address || !dateOfBirth || !nationalId || !backAccountNumber || !employeeId || !position || !salary || !healthStatus || !joiningDate || !gender || !insurance) {
@@ -18,7 +18,7 @@ exports.staffRegisterService = async (req) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    const staff = await staffModel.create({ name, email, username, password: hashedPassword, phoneNo, address, dateOfBirth, gender, nationalId, backAccountNumber, employeeId, position, salary, insurance, healthStatus, joiningDate })
+    const staff = await staffModel.create({ name, email, username, password: hashedPassword, phoneNo, profilePic, nidProofPic, address, dateOfBirth, gender, nationalId, backAccountNumber, employeeId, position, salary, insurance, healthStatus, joiningDate })
 
     return {
         status: 'Success',
@@ -63,9 +63,9 @@ exports.staffLoginService = async (req) => {
 exports.staffProfileService = async (req) => {
     const staffId = req.headers.id;
 
-    const admin = await staffModel.findById({ _id: staffId });
+    const staff = await staffModel.findById({ _id: staffId });
 
-    return { status: 'Success', data: admin }
+    return { status: 'success', data: staff }
 };
 
 //!Staff Email Update
