@@ -10,6 +10,10 @@ const staffSchema = new Schema({
         required: true,
         unique: true
     },
+    status: {
+        type: String,
+        default: 'unverified'
+    },
     password: {
         type: String,
         required: true
@@ -18,6 +22,14 @@ const staffSchema = new Schema({
         type: String,
         required: true,
         unique: true
+    },
+    profilePic: {
+        type: String,
+        required: true
+    },
+    nidProofPic: {
+        type: String,
+        required: true
     },
     address: {
         type: String,

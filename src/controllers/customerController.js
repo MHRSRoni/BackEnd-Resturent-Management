@@ -36,8 +36,13 @@ exports.customerLoginController = async (req, res, next) => {
     try {
         const result = await customerLoginService(req);
 
+        console.log(result.token)
+
         if (result.status === 'success') {
-            res.cookie('token', result.token);
+            res.cookie('token', result.token,
+                { sameSite: 'none', httpOnly: true, secure: true }
+            );
+
 
             return res.status(200).json(result)
         } else {

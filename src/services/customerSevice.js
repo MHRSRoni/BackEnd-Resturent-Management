@@ -228,7 +228,7 @@ exports.customerProfileUpdateService = async (req) => {
     }
 
     //!Find And Update Customer Profile
-    await customerProfileModel.updateOne(
+    await customerProfileModel.findByIdAndUpdate(
         { customerId },
         { customerId, firstName, lastName, phoneNo, gender, address, profilePic },
         { upsert: true }
