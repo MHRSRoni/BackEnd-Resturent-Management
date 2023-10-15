@@ -40,8 +40,11 @@ exports.customerLoginController = async (req, res, next) => {
 
         if (result.status === 'success') {
             res.cookie('token', result.token,
-                { sameSite: 'none', httpOnly: true, secure: true }
-            );
+                {
+                    // sameSite: 'none',
+                    // httpOnly: true,
+                    // secure: true
+                });
 
 
             return res.status(200).json(result)
