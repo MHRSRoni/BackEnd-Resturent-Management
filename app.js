@@ -20,6 +20,8 @@ const app = express()
 secure(app)   //security implementation
 log(app)      //loging implementation
 
+//cookieParser
+app.use(cookieParser())
 
 //body parser
 app.use(express.json())
@@ -40,8 +42,7 @@ app.use('*', (req, res, next) => {
 //error handlers
 app.use(CustomErrorHandler({ log: true }))
 
-//cookieParser
-app.use(cookieParser())
+
 
 
 /**
