@@ -37,19 +37,13 @@ exports.customerLoginController = async (req, res, next) => {
         const result = await customerLoginService(req);
 
         if (result.status === 'success') {
-            res.cookie('token', result.token,
+            return res.cookie('token', result.token,
                 {
-                    sameSite: 'none',
-                    httpOnly: true,
+                    // sameSite: 'none',
+                    // httpOnly: true,
                     secure: true
-                });
-
-
-            return res.status(200).json(result)
-        } else {
-            return res.status(200).json(result)
+                }).status(200).json(result);
         }
-
 
     } catch (error) {
         next(error);
@@ -60,9 +54,8 @@ exports.customerLogoutController = async (req, res, next) => {
     try {
         const result = await customerLogoutService(req);
 
-        res.clearCookie('token');
+        return res.clearCookie('token').status(200).json(result);
 
-        return res.status(200).json(result)
     } catch (error) {
         next(error);
     }

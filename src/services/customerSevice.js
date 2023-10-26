@@ -4,30 +4,14 @@ const customerModel = require("../models/customerModel");
 const customerProfileModel = require("../models/customerProfileModel");
 const { ValidationError, NotFoundError, AuthenticationError } = require('custom-error-handlers/error');
 const { sendVerifyEmail, verifyEmail } = require('../utils/verifyEmail');
+const { userValidation } = require('../validation/userValidation');
 
 
 //!Customer Register Service
 exports.customerRegisterService = async (req) => {
     const { username, email, password, confirmPassword } = req.body;
 
-    if (!username) {
-        throw new ValidationError('Username is required');
-    }
-    if (!email) {
-        throw new ValidationError('Email is required');
-    }
-    if (!password) {
-        throw new ValidationError('Password is required');
-    }
-    if (password.length < 6) {
-        throw new ValidationError('Password must be at least 6 characters')
-    }
-    if (!confirmPassword) {
-        throw new ValidationError('Confirm Password is required');
-    }
-    if (password !== confirmPassword) {
-        throw new ValidationError('Password and Confirm Password must be the same')
-    }
+    userValidation(username, email, password, confirmPassword);
 
     //!Check Existing Username
     const existingUsername = await customerModel.findOne({ username });
@@ -174,7 +158,7 @@ exports.customerLoginService = async (req) => {
 };
 
 //!Customer Logout
-exports.customerLogoutService = () => {
+exports.customerLogoutService = async () => {
     return {
         status: "success",
         massage: "Logout Success"
