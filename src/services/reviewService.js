@@ -33,7 +33,7 @@ const createReviewService = async (customerId, foodId, comment, rating) => {
  *@async use await before calling
  * @return  {object}          result object
  */
-const readReviewService = async (count, foodId, page, limit) => {
+const readReviewService = async (count, id, page, limit) => {
 
     let review = {};
 
@@ -42,9 +42,9 @@ const readReviewService = async (count, foodId, page, limit) => {
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
 
-        const reviewCount = await reviewModel.find({ foodId }).count();
+        const reviewCount = await reviewModel.find({ foodId: id }).count();
 
-        const allReviews = await reviewModel.find({ foodId })
+        const allReviews = await reviewModel.find({ foodId: id })
             .skip(startIndex)
             .limit(limit)
 
@@ -69,7 +69,7 @@ const readReviewService = async (count, foodId, page, limit) => {
 
     }
     else {
-        review = await reviewModel.findById(foodId).select({ _id: 0, updatedAt: 0 })
+        review = await reviewModel.findById(id).select({ _id: 0, updatedAt: 0 })
         return { status: "success", operation: 'read', data: review }
     }
 
