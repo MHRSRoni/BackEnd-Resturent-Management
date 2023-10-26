@@ -4,8 +4,8 @@ const createReviewController = async (req, res, next) => {
     try {
         //get the data from the request
         const customerId = req.headers?.id
-        const foodId = req.body?.foodId 
-        const comment = req.body?.comment 
+        const foodId = req.body?.foodId
+        const comment = req.body?.comment
         const rating = req.body?.rating
 
         //create a new review
@@ -26,7 +26,7 @@ const readSingleReviewController = async (req, res, next) => {
         const reviewId = req.params?.reviewId
 
         //get the review
-        const result = await readReviewService("single",reviewId)
+        const result = await readReviewService("single", reviewId)
 
         //give the response with result
         return res.json(result)
@@ -42,8 +42,12 @@ const readAllReviewController = async (req, res, next) => {
         //get the data from the request
         const foodId = req.params?.foodId
 
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 6;
+
         //get the review
-        const result = await readReviewService('all' , foodId)
+        const result = await readReviewService('all', foodId, page, limit);
+
 
         //give the response with result
         return res.json(result)

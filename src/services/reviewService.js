@@ -17,12 +17,12 @@ const { reviewModel } = require("../models/reviewModel")
 const createReviewService = async (customerId, foodId, comment, rating) => {
 
     //validation will be added here
-    const review = await reviewModel.create({customerId,foodId, comment, rating})
-    if(review){
-        return {status : "success", operation : 'created', data : review}
+    const review = await reviewModel.create({ customerId, foodId, comment, rating })
+    if (review) {
+        return { status: "success", operation: 'created', data: review }
     }
-    return {status : "error", data : "falied to create review"}
-   
+    return { status: "error", data: "falied to create review" }
+
 
 }
 
@@ -33,19 +33,47 @@ const createReviewService = async (customerId, foodId, comment, rating) => {
  *@async use await before calling
  * @return  {object}          result object
  */
-const readReviewService = async (count , id) => {
-    //validation will be added
-    let review = null
-    if(count.toLowerCase() == "all"){
-        review = await reviewModel.find({foodId : id}).select({updatedAt : 0})
-        return {status : "success", operation : 'read', data : review}
+const readReviewService = async (count, foodId, page, limit) => {
+
+    let review = {};
+
+    if (count.toLowerCase() == "all") {
+
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+
+        const reviewCount = await reviewModel.find({ foodId }).count();
+
+        const allReviews = await reviewModel.find({ foodId })
+            .skip(startIndex)
+            .limit(limit)
+
+        review.totalReview = reviewCount;
+        review.pageCount = Math.ceil(reviewCount / limit);
+
+        if (endIndex < reviewCount) {
+            review.next = {
+                page: page + 1,
+                limit: limit
+            }
+        }
+        if (startIndex > 0) {
+            review.prev = {
+                page: page - 1,
+                limit: limit
+            }
+        }
+        review.resultReviews = allReviews;
+
+        return { status: 'success', operation: 'read', data: review }
+
     }
-    else{
-        review = await reviewModel.findById(id).select({_id : 0, updatedAt : 0})
-        return {status : "success", operation : 'read', data : review}
+    else {
+        review = await reviewModel.findById(foodId).select({ _id: 0, updatedAt: 0 })
+        return { status: "success", operation: 'read', data: review }
     }
 
-}
+};
 
 
 /**
@@ -58,13 +86,12 @@ const readReviewService = async (count , id) => {
 const deleteReviewService = async (reviewId) => {
     //validation will be added here
     const review = await reviewModel.findByIdAndDelete(reviewId)
-    if(review){
-        return {status : "success", operation : 'deleted',data : review}
+    if (review) {
+        return { status: "success", operation: 'deleted', data: review }
     }
     else {
-        return {status : "fail"}
+        return { status: "fail" }
     }
 }
 
-
-module.exports = {createReviewService, deleteReviewService, readReviewService,}
+module.exports = { createReviewService, deleteReviewService, readReviewService }
