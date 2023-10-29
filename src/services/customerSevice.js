@@ -205,7 +205,7 @@ exports.customerProfileUpdateService = async (req) => {
     }
 
     const customerPhone = await customerProfileModel.findOne(
-        { phoneNo: { $not: { $eq: phoneNo } }, customerId }, { phoneNo: 1 });
+        { phoneNo: phoneNo }, { phoneNo: 1 });
 
     if (customerPhone) {
         throw new ValidationError('Phone number already exists')
