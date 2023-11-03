@@ -26,7 +26,7 @@ exports.secure = (app) => {
     app.use(limiter)
 
     app.use(cors({
-        origin:["http://localhost:5173","https://nitexapplication.netlify.app"],
-        credentials:true
+        origin: ["http://localhost:5173", "https://nitexapplication.netlify.app"],
+        credentials: true
     }));
 } 

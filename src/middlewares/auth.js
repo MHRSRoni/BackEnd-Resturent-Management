@@ -6,7 +6,7 @@ const staffModel = require('../models/staffModel');
 //!Is Login
 exports.isLogin = async (req, res, next) => {
     try {
-        const { token } = req.headers;
+        const { token } = req.cookies;
 
         if (!token) {
             throw new ValidationError('You are not logged in')
@@ -17,7 +17,6 @@ exports.isLogin = async (req, res, next) => {
         req.headers.email = decoded.email
         req.headers.id = decoded.id
         req.headers.role = decoded.role
-
 
         next()
     } catch (error) {
@@ -62,35 +61,35 @@ exports.isStaff = async (req, res, next) => {
  */
 exports.giveAccessTo = (role) => (req, res, next) => {
 
-    try{
+    try {
         //if role is string
-        if(typeof role === 'string'){
+        if (typeof role === 'string') {
             //match with user role
-            if(role === req.headers.role){
+            if (role === req.headers.role) {
                 //give access to the user
                 next();
-            }else{
+            } else {
                 //check for next matched route
                 next('route')
             }
 
-        //if role is an Array
-        }else if(role instanceof Array){
+            //if role is an Array
+        } else if (role instanceof Array) {
             //match with user role
-            if(role.includes(req.headers.role)){
+            if (role.includes(req.headers.role)) {
                 //give access to the user
                 next();
-            }else{
+            } else {
                 //check for next matched route
                 next('route')
             }
 
-        //if no role passed
-        }else{
+            //if no role passed
+        } else {
             throw new AuthorizationError('something went wrong')
         }
 
-    }catch(e){
+    } catch (e) {
         //pass error to the error handler
         next(e);
     }
