@@ -8,15 +8,15 @@ exports.isLogin = async (req, res, next) => {
     try {
         const { token } = req.cookies;
 
-        if (!token) {
+        if (token) {
+            const decoded = jwt.verify(token, process.env.JWT_KEY);
+
+            req.headers.email = decoded.email
+            req.headers.id = decoded.id
+            req.headers.role = decoded.role
+        } else {
             throw new AuthorizationError('You are not logged in', 401)
         }
-
-        const decoded = jwt.verify(token, process.env.JWT_KEY);
-
-        req.headers.email = decoded.email
-        req.headers.id = decoded.id
-        req.headers.role = decoded.role
 
         next()
     } catch (error) {
