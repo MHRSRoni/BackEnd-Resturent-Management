@@ -39,7 +39,7 @@ exports.customerLoginController = async (req, res, next) => {
         if (result.status === 'success') {
             return res.cookie('token', result.token,
                 {
-                    // sameSite: 'none',
+                    sameSite: true,
                     maxAge: 86400000,
                     httpOnly: true,
                     secure: true

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { ValidationError, AuthorizationError } = require('custom-error-handlers/error');
+const { AuthorizationError } = require('custom-error-handlers/error');
 const adminModel = require('../models/adminModel');
 const staffModel = require('../models/staffModel');
 
@@ -8,15 +8,15 @@ exports.isLogin = async (req, res, next) => {
     try {
         const { token } = req.cookies;
 
-        if (!token) {
-            throw new ValidationError('You are not logged in')
+        if (token) {
+            const decoded = jwt.verify(token, process.env.JWT_KEY);
+
+            req.headers.email = decoded.email
+            req.headers.id = decoded.id
+            req.headers.role = decoded.role
+        } else {
+            throw new AuthorizationError('You are not logged in', 401)
         }
-
-        const decoded = jwt.verify(token, process.env.JWT_KEY);
-
-        req.headers.email = decoded.email
-        req.headers.id = decoded.id
-        req.headers.role = decoded.role
 
         next()
     } catch (error) {
@@ -30,7 +30,7 @@ exports.isAdmin = async (req, res, next) => {
         const user = await adminModel.findOne({ _id: req.headers.id });
 
         if (user.role !== 'admin') {
-            throw new ValidationError('You are not Admin')
+            throw new AuthorizationError('You are not Admin')
         }
 
         next()
@@ -45,7 +45,7 @@ exports.isStaff = async (req, res, next) => {
         const user = await staffModel.findById({ _id: req.headers.id });
 
         if (user.role !== 'staff') {
-            throw new ValidationError('You are not Staff')
+            throw new AuthorizationError('You are not Staff')
         }
         next()
     } catch (error) {
