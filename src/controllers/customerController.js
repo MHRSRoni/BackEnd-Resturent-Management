@@ -42,7 +42,7 @@ exports.customerLoginController = async (req, res, next) => {
                     sameSite: true,
                     maxAge: 86400000,
                     httpOnly: true,
-                    secure: true
+                    secure: false
                 }).status(200).json(result);
         }
 
@@ -53,14 +53,18 @@ exports.customerLoginController = async (req, res, next) => {
 
 exports.customerLogoutController = async (req, res, next) => {
     try {
-        const result = await customerLogoutService(req);
+        const result = await customerLogoutService();
 
-        return res.clearCookie('token').status(200).json(result);
+        if (result.status === 'success') {
+            return res.clearCookie('token').status(200).json(result);
+        }
 
     } catch (error) {
         next(error);
     }
 };
+
+
 
 exports.customerProfileController = async (req, res, next) => {
     try {

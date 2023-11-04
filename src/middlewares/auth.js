@@ -8,6 +8,8 @@ exports.isLogin = async (req, res, next) => {
     try {
         const { token } = req.cookies;
 
+        console.log(token)
+
         if (token) {
             const decoded = jwt.verify(token, process.env.JWT_KEY);
 
