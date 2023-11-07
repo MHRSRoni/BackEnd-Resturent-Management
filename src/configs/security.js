@@ -25,16 +25,21 @@ exports.secure = (app) => {
     app.use(hpp())
     app.use(limiter)
 
-    var allowlist = ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://nitexapplication.netlify.app']
-    var corsOptionsDelegate = function (req, callback) {
-        var corsOptions;
-        if (allowlist.indexOf(req.header('Origin')) !== -1) {
-            corsOptions = { origin: true, credentials: true }
-        } else {
-            corsOptions = { origin: false }
-        }
-        callback(null, corsOptions)
-    }
+    // var allowlist = ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://nitexapplication.netlify.app']
+    // var corsOptionsDelegate = function (req, callback) {
+    //     var corsOptions;
+    //     if (allowlist.indexOf(req.header('Origin')) !== -1) {
+    //         corsOptions = { origin: true, credentials: true }
+    //     } else {
+    //         corsOptions = { origin: false }
+    //     }
+    //     callback(null, corsOptions)
+    // }
 
-    app.use(cors(corsOptionsDelegate));
+    // app.use(cors(corsOptionsDelegate));
+
+    app.use(cors({
+        origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+        credentials: true
+    }))
 } 
