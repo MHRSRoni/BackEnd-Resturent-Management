@@ -182,7 +182,7 @@ exports.customerProfileService = async (req) => {
 
 //!Customer Profile Update Service
 exports.customerProfileUpdateService = async (req) => {
-    const { firstName, lastName, phoneNo, gender, address, profilePic } = req.body;
+    const { firstName, lastName, gender, address, profilePic } = req.body;
     const customerId = req.headers.id;
 
     if (!firstName) {
@@ -204,20 +204,12 @@ exports.customerProfileUpdateService = async (req) => {
         throw new ValidationError('Profile Picture is required')
     }
 
-    const customerPhone = await customerProfileModel.findOne(
-        { phoneNo: phoneNo }, { phoneNo: 1 });
-
-    if (customerPhone) {
-        throw new ValidationError('Phone number already exists')
-    }
-
     //!Find And Update Customer Profile
     await customerProfileModel.updateOne(
         { customerId },
-        { customerId, firstName, lastName, phoneNo, gender, address, profilePic },
+        { customerId, firstName, lastName, gender, address, profilePic },
         { upsert: true }
     );
-
 
     return { status: "success", message: "Profile Save Changed!" };
 };

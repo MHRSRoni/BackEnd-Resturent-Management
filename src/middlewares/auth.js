@@ -6,7 +6,7 @@ const staffModel = require('../models/staffModel');
 //!Is Login
 exports.isLogin = async (req, res, next) => {
     try {
-        const { token } = req.headers || req.cookies;
+        const { token } = req.cookies || req.headers;
 
         if (token) {
             const decoded = jwt.verify(token, process.env.JWT_KEY);
